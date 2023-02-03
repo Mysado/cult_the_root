@@ -3,7 +3,20 @@ using UnityEngine;
 
 public class FlippersManager : MonoBehaviour
 {
-    private List<Flipper> _flippers;
+    #region RegionForTesting
+    
+    public Flipper testFlipper;
+    public Transform testSacrificeTransform;
+    
+    private void Awake()
+    {
+        AddFlipper(testFlipper);
+        SetSacrificeTransformInFlippers(testSacrificeTransform);
+    }
+    
+    #endregion
+    
+    private List<Flipper> _flippers = new List<Flipper>();
 
     public void AddFlipper(Flipper flipper)
     {
