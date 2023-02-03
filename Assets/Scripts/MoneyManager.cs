@@ -3,19 +3,19 @@ using UnityEngine;
 
 public class MoneyManager : MonoBehaviour
 {
-    public event Action<int> UpdateMoneyAmount; 
+    public event Action<int> OnMoneyAmountChanged; 
     
     private int _money;
 
-    private void AddMoney(int addAmount)
+    public void AddMoney(int addAmount)
     {
         _money += addAmount;
-        UpdateMoneyAmount?.Invoke(_money);
+        OnMoneyAmountChanged?.Invoke(_money);
     }
 
-    private void SpendMoney(int spendAmount)
+    public void SpendMoney(int spendAmount)
     {
         _money -= spendAmount;
-        UpdateMoneyAmount?.Invoke(_money);
+        OnMoneyAmountChanged?.Invoke(_money);
     }
 }

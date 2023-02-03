@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ public class Flipper : MonoBehaviour
     [SerializeField] private float rotationDuration = 0.5f;
     [SerializeField] private float minimalDistanceToSacrifice;
     
+    public event Action OnFlipperBuy;
+
+    private bool _isBought;
     private bool _rotationInProgress;
     private int _currentRotationIndex;
     private FlipperRotationValue[] _flipperRotationValues =
@@ -21,6 +25,13 @@ public class Flipper : MonoBehaviour
     private void OnMouseOver()
     {
         if (!Input.GetMouseButton(0)) return;
+        if (!_isBought)
+        {
+            BuyFlipper();
+            _isBought = true;
+            return;
+        }
+        Debug.Log("Clicked");
         if (!CanChangeState()) { return; }
 
         _rotationInProgress = true;
@@ -29,10 +40,16 @@ public class Flipper : MonoBehaviour
         
     }
 
+    private void BuyFlipper()
+    {
+        OnFlipperBuy?.Invoke();
+    }
+
     private bool CanChangeState()
     {
         if (_rotationInProgress) { return false; }
-
+        if (!_isBought) { return false; }
+        
         var distanceToSacrifice = CalculateDistanceToSacrifice();
         if (distanceToSacrifice < minimalDistanceToSacrifice)
         {

@@ -1,26 +1,31 @@
+using System;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 
 public class FlippersManager : MonoBehaviour
 {
-    #region RegionForTesting
-    
     public Flipper testFlipper;
-    public Transform testSacrificeTransform;
     
-    private void Awake()
+    public event Action<int> OnFlipperBuy; 
+
+    private List<Flipper> _flippers = new();
+    
+    private const int FlipperCost = 45;
+
+    public void AddFlippers()
     {
-        AddFlipper(testFlipper);
-        SetSacrificeTransformInFlippers(testSacrificeTransform);
+        var flippers = GameObject.FindGameObjectsWithTag(Tags.FLIPPER);
+        foreach (var flipper in flippers)
+        {
+            AddFlipper(flipper.GetComponent<Flipper>());
+        }
     }
     
-    #endregion
-    
-    private List<Flipper> _flippers = new List<Flipper>();
-
-    public void AddFlipper(Flipper flipper)
+    private void AddFlipper(Flipper flipper)
     {
         _flippers.Add(flipper);
+        flipper.OnFlipperBuy += BuyFlipper;
     }
 
     public void SetSacrificeTransformInFlippers(Transform sacrificeTransform)
@@ -29,5 +34,10 @@ public class FlippersManager : MonoBehaviour
         {
             flipper.SetSacrificeTransform(sacrificeTransform);
         }
+    }
+
+    private void BuyFlipper()
+    {
+        OnFlipperBuy?.Invoke(FlipperCost);
     }
 }
