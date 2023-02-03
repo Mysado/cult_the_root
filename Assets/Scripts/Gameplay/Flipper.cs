@@ -6,6 +6,7 @@ public class Flipper : MonoBehaviour
 {
     [SerializeField] private float rotationDuration = 0.5f;
     [SerializeField] private float minimalDistanceToSacrifice;
+    [SerializeField] private Transform flipperArm;
     
     public event Action OnFlipperBuy;
 
@@ -31,18 +32,17 @@ public class Flipper : MonoBehaviour
             _isBought = true;
             return;
         }
-        Debug.Log("Clicked");
         if (!CanChangeState()) { return; }
 
         _rotationInProgress = true;
         SetRotationIndex();
         FlipRotation();
-        
     }
 
     private void BuyFlipper()
     {
         OnFlipperBuy?.Invoke();
+        flipperArm.gameObject.SetActive(true);
     }
 
     private bool CanChangeState()
