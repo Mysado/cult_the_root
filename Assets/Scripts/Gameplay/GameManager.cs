@@ -145,6 +145,7 @@
         private void TrapsManager_OnSacrificeReachedBottom()
         {
             cameraManager.ChangeCameraLocation(CameraLocation.Down);
+            cultistsManager.StartMovingCultistGroup();
         }
 
         private void InitializeManagers()

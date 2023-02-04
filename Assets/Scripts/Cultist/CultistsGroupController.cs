@@ -10,6 +10,7 @@ namespace Cultist
     {
         [SerializeField] private ParticleSystem fightParticleSystem;
         [SerializeField] private Transform bodyAboveCultistsTransform;
+        [SerializeField] private Transform bodyAboveAltarTransform;
         [SerializeField] private float moveBodyAboveCultistsDuration;
 
         public event Action OnFightWon;
@@ -18,7 +19,8 @@ namespace Cultist
         private List<CultistController> _cultists = new();
         private SacrificeController _sacrificeController;
 
-        private const float FightDuration = 5f;
+        private const float FightDuration = 1f;
+        private const float MovingToAltarDuration = 1.0f;
 
         public void SetReferences(List<CultistController> cultists)
         {
@@ -37,12 +39,13 @@ namespace Cultist
         {
             foreach (var cultistController in _cultists)
             {
-                cultistController.MoveToAltar();
+                cultistController.MoveToStartPosition();
             }
         }
 
         public void TransportBody()
         {
+            DisableGravityForBody();
             MoveBodyAboveCultists();
             
         }
@@ -79,17 +82,32 @@ namespace Cultist
             OnCultistLost?.Invoke();
         }
 
+        private void DisableGravityForBody()
+        {
+            _sacrificeController.GetComponent<Rigidbody>().isKinematic = true;
+            _sacrificeController.GetComponent<Rigidbody>().useGravity = false;
+        }
+
         private void MoveBodyAboveCultists()
         {
-            _sacrificeController.transform.DOMove(bodyAboveCultistsTransform.position, moveBodyAboveCultistsDuration).OnComplete(MoveCultistsGroupToAltar);
+            _sacrificeController.transform.DOMove(bodyAboveCultistsTransform.position, moveBodyAboveCultistsDuration)
+                                .OnComplete(MoveCultistsGroupToAltar);
+        }
+
+        private void MoveBodyToAltar()
+        {
+            _sacrificeController.transform.DOMove(bodyAboveAltarTransform.position, MovingToAltarDuration);
         }
         
         private void MoveCultistsGroupToAltar()
         {
+            Debug.Log("Move Cultists To Altar");
+            Debug.Log("Cultists amount: " + _cultists.Count);
             foreach (var cultistController in _cultists)
             {
                 cultistController.MoveToAltar();
             }
+            MoveBodyToAltar();
         }
 
         private IEnumerator Fight()

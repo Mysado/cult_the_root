@@ -19,6 +19,9 @@ namespace Cultist
         public event Action OnReachedAltar;
 
         private SacrificeController _currentSacrifice;
+        private int _cultistsReachedSacrifice;
+        private int _cultistsReachedAltar;
+        private int _cultistsReachedStartingPos;
 
         private readonly List<CultistController> _cultists = new();
         private readonly Vector2 _cultistSpawnPositionOffsetMinMax = new(0.1f, 2);
@@ -42,6 +45,7 @@ namespace Cultist
             var cultistController = cultist.GetComponent<CultistController>();
             cultistController.OnReachedSacrifice += CultistController_OnReachedSacrifice;
             cultistController.OnReachedAltar += CultistController_OnReachedAltar;
+            cultistController.OnReachedStartingPosition += CultistController_OnReachedStartingPosition;
             cultistController.SetReferences(randomCultistPosition, altarTransform, sacrificeTransform);
             AddCultistToGroup(cultistController);
             OnCultistsAmountChanged?.Invoke(_cultists.Count);
@@ -65,6 +69,10 @@ namespace Cultist
         public void StartMovingCultistGroup()
         {
             _currentSacrifice = gameManager.GetCurrentSacrifice();
+            if (_currentSacrifice.SacrificeState is not (SacrificeStates.Stunned or SacrificeStates.Dead))
+            {
+                _currentSacrifice.SacrificeState = SacrificeStates.FightingCultists;
+            }
             cultistsGroupController.MoveCultistsGroupToSacrifice();
         }
 
@@ -94,18 +102,47 @@ namespace Cultist
 
         private void CultistController_OnReachedSacrifice()
         {
+
+            if (_cultistsReachedSacrifice < _cultists.Count-1)
+            {
+                _cultistsReachedSacrifice++;
+                Debug.Log("CultistsCount: " + _cultists.Count);
+                Debug.Log("_cultistsReachedSacrifice: " + _cultistsReachedSacrifice);
+                return;
+            }
+            
             if (_currentSacrifice.SacrificeState == SacrificeStates.Dead)
             {
                 TransportBody();
                 return;
             }
             StartSacrificeFight(_currentSacrifice);
+
+            _cultistsReachedSacrifice = 0;
         }
 
         private void CultistController_OnReachedAltar()
         {
+            if (_cultistsReachedAltar < _cultists.Count-1)
+            {
+                _cultistsReachedAltar++;
+                return;
+            }
+            
             OnReachedAltar?.Invoke();
             cultistsGroupController.MoveCultistsToStartingPosition();
+            _cultistsReachedAltar = 0;
+        }
+
+        private void CultistController_OnReachedStartingPosition()
+        {
+            if (_cultistsReachedStartingPos < _cultists.Count-1)
+            {
+                _cultistsReachedStartingPos++;
+                return;
+            }
+            //do something here
+            _cultistsReachedStartingPos = 0;
         }
 
         private void CultistGroupController_OnCultistLost()

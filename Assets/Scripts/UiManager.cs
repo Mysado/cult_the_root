@@ -49,7 +49,10 @@ public class UiManager : MonoBehaviour
     {
         if (gameManager.CanAfford(BuyableObjectType.Cultist))
         {
-            OnBuyCultist?.Invoke();
+            if (gameManager.GetCurrentSacrifice().SacrificeState is SacrificeStates.IdleAtExit or SacrificeStates.IdleAtHole or SacrificeStates.WalkingToExit or SacrificeStates.WalkingToTree)
+            {
+                OnBuyCultist?.Invoke();
+            }
         }
     }
 
