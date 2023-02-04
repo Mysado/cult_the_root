@@ -6,7 +6,7 @@ using UnityEngine;
 public class SacrificeData : ScriptableObject
 {
     public SacrificeTypes SacrificeType;
-    public Difficulty MinimumDifficultyNeededToAppear;
+    public int MinimumDifficultyNeededToAppear;
     public int Hp;
     public float PercentageHpLossToStun;
     [InfoBox("cultists amount per 10% above stun threshold")]
