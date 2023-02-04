@@ -21,6 +21,8 @@
     public enum BuyableObjectType
     {
         FlipperSpot,
-        TrapSpot
+        TrapSpot,
+        Cultist,
+        CultistsUpgrade
     }
 }

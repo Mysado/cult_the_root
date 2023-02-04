@@ -1,6 +1,7 @@
 ﻿namespace Gameplay
 {
     using System.Linq;
+    using Cultist;
     using UnityEngine;
 
     public class GameManager : MonoBehaviour
@@ -12,15 +13,20 @@
         [SerializeField] private SacrificeManager sacrificeManager;
         [SerializeField] private DifficultyManager difficultyManager;
         [SerializeField] private LeverManager leverManager;
-
+        [SerializeField] private CultistsManager cultistsManager;
         
         public UiManager UiManager => uiManager;
+        
         public void Awake()
         {
             SetReferences();
             InitializeManagers();
             moneyManager.OnMoneyAmountChanged += MoneyManager_OnMoneyAmountChanged;
             sacrificeManager.OnSacrificeSpawned += SacrificeManager_OnSacrificeSpawned;
+            cultistsManager.OnCultistsAmountChanged += CultistsManager_OnCultistsAmountChanged;
+
+            uiManager.OnBuyCultist += UiManager_OnBuyCultist;
+            uiManager.OnUpgradeCultists += UiManager_OnUpgradeCultists;
         }
         
         public bool CanAfford(BuyableObjectType objectType)
@@ -44,7 +50,6 @@
         {
             leverManager.UseLever();
         }
-        
 
         private void SetReferences()
         {
@@ -74,6 +79,21 @@
         private void SacrificeManager_OnSacrificeSpawned(Transform sacrifice)
         {
             flippersManager.SetSacrificeTransformInFlippers(sacrifice);
+        }
+
+        private void CultistsManager_OnCultistsAmountChanged(int cultistsAmount)
+        {
+            uiManager.OnCultistsAmountChanged(cultistsAmount);
+        }
+
+        private void UiManager_OnBuyCultist()
+        {
+            cultistsManager.BuyCultist();
+        }
+
+        private void UiManager_OnUpgradeCultists()
+        {
+            cultistsManager.UpgradeCultists();
         }
 
         private void InitializeManagers()
