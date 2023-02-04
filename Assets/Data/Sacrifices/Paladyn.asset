@@ -19,7 +19,7 @@ MonoBehaviour:
   Hp: 5
   PercentageHpLossToStun: 20
   CultistsKillAmount: 1
-  WalkingSpeed: 5
+  WalkingSpeed: 10
   ExpWorth: 50
   WaitingTimeAtTree: 5
   ExpMultiplierOnDifficulty: 5

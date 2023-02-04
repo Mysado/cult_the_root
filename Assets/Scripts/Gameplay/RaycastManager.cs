@@ -70,7 +70,6 @@
                     if (gameManager.CanAfford(TrapTypes.Boots,0))
                     {
                         gameManager.UpgradeTrap(trap);
-                        raycastHit.SetActive(false);
                     }
                     break;
             }

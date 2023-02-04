@@ -75,6 +75,7 @@ public class SacrificeManager : MonoBehaviour
         currentSacrifice.Move(ExitPosition.position, currentSacrifice.SacrificeDataModel.WalkingSpeed, SacrificeStates.IdleAtExit);
         currentSacrifice.SacrificeState = SacrificeStates.WalkingToExit;
         startedExitTimer = false;
+        currentSacrifice.transform.DOLocalRotate(new Vector3(0.0f, 180.0f, 0.0f), 1.0f);
     }
 
     private void DespawnSacrifice()
