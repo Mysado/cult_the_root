@@ -5,7 +5,7 @@ public class MoneyManager : MonoBehaviour
 {
     public event Action<int> OnMoneyAmountChanged; 
     
-    private int _money;
+    private int _money = 25;
 
     public void AddMoney(int addAmount)
     {
@@ -17,5 +17,10 @@ public class MoneyManager : MonoBehaviour
     {
         _money -= spendAmount;
         OnMoneyAmountChanged?.Invoke(_money);
+    }
+
+    public bool CanAfford(int moneyAmount)
+    {
+        return _money >= moneyAmount;
     }
 }
