@@ -20,7 +20,7 @@ public class CameraPositionParameters
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] private List<CameraPositionParameters> cameraPositions;
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera mainCamera;
     private CameraLocation cameraLocation;
 
     private bool isInTransition;
@@ -55,8 +55,8 @@ public class CameraManager : MonoBehaviour
         if (overrideTransition)
             transitionDuration = overrideDuration;
         isInTransition = true;
-        camera.transform.DOMove(cameraPositions[(int)cameraLocation].cameraPosition.position, transitionDuration).onComplete = () => isInTransition = false;
-        camera.DOOrthoSize(cameraPositionParameter.cameraSize, transitionDuration);
+        mainCamera.transform.DOMove(cameraPositions[(int)cameraLocation].cameraPosition.position, transitionDuration).onComplete = () => isInTransition = false;
+        mainCamera.DOOrthoSize(cameraPositionParameter.cameraSize, transitionDuration);
     }
 
     public void ChangeCameraLocation(CameraLocation newLocation, bool overrideTransition = false, float overrideDuration = 0)

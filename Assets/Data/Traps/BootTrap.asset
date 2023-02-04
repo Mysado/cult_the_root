@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8c9aa71dc7f6cc48bfd19a01d656544, type: 3}
-  m_Name: HammerTrap
+  m_Name: BootTrap
   m_EditorClassIdentifier: 
-  TrapPrefab: {fileID: 4292242415737526562, guid: 06915564d82c5034b8416eb56f3f5f21,
+  TrapPrefab: {fileID: 5127653801001926505, guid: 5d170807bef550f4c99729340eea4216,
     type: 3}
-  TrapType: 2
+  TrapType: 0
   IsLethal: 0
   UpgradeCostAndDamageForThatLevel:
   - UpgradeCost: 10

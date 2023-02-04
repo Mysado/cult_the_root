@@ -10,7 +10,7 @@ public class Flipper : MonoBehaviour, InteractableObject
     private bool _rotationInProgress;
     private int _currentRotationIndex;
     private FlipperRotationValue[] _flipperRotationValues =
-        { new(0, 0, -45), new(0, 0, 45) };
+        { new(-45, 0, 0), new(45, 0, 0) };
 
     private Transform _sacrificeTransform;
 
