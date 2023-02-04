@@ -54,7 +54,7 @@ public class UiManager : MonoBehaviour
 
     private void TryUpgradeCultists()
     {
-        if (gameManager.CanAfford(BuyableObjectType.CultistsUpgrade))
+        if (gameManager.CanAfford(BuyableObjectType.CultistUpgrade))
         {
             OnUpgradeCultists?.Invoke();
         }

@@ -30,6 +30,11 @@ public class SacrificeManager : MonoBehaviour
         return currentSacrifice.transform;
     }
 
+    public SacrificeController GetSacrificeController()
+    {
+        return currentSacrifice;
+    }
+
     private void Update()
     {
         if (!currentSacrifice || !isInitialized)

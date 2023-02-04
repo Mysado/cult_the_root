@@ -11,27 +11,40 @@ namespace Cultist
         [SerializeField] private GameManager gameManager;
         [SerializeField] private GameObject cultistPrefab;
         [SerializeField] private Transform cultistsSpawnPosition;
+        [SerializeField] private Transform altarTransform;
+        [SerializeField] private Transform sacrificeTransform;
         [SerializeField] private CultistsGroupController cultistsGroupController;
 
         public event Action<int> OnCultistsAmountChanged;
+        public event Action OnReachedAltar;
+
+        private SacrificeController _currentSacrifice;
 
         private readonly List<CultistController> _cultists = new();
         private readonly Vector2 _cultistSpawnPositionOffsetMinMax = new(0.1f, 2);
 
         private void Awake()
         {
-            cultistsGroupController.SetCultistGroup(_cultists);
+            cultistsGroupController.SetReferences(_cultists);
+            cultistsGroupController.OnFightWon += CultistGroupController_OnFightWon;
+            cultistsGroupController.OnCultistLost += CultistGroupController_OnCultistLost;
+            SpawnCultist();
+            SpawnCultist();
+            SpawnCultist();
+            SpawnCultist();
         }
 
-        public void BuyCultist()
+        public void SpawnCultist()
         {
-            var cultist = Instantiate(cultistPrefab, GetRandomCultistSpawnPosition(), cultistPrefab.transform.rotation,
+            var randomCultistPosition = GetRandomCultistSpawnPosition();
+            var cultist = Instantiate(cultistPrefab, randomCultistPosition, cultistPrefab.transform.rotation,
                 transform);
             var cultistController = cultist.GetComponent<CultistController>();
             cultistController.OnReachedSacrifice += CultistController_OnReachedSacrifice;
+            cultistController.OnReachedAltar += CultistController_OnReachedAltar;
+            cultistController.SetReferences(randomCultistPosition, altarTransform, sacrificeTransform);
             AddCultistToGroup(cultistController);
             OnCultistsAmountChanged?.Invoke(_cultists.Count);
-
         }
 
         public void LoseCultist()
@@ -49,15 +62,20 @@ namespace Cultist
             }
         }
 
-        public void StartMovingCultistGroup(Transform sacrificeTransform)
+        public void StartMovingCultistGroup()
         {
-            cultistsGroupController.MoveCultistsGroupToSacrifice(sacrificeTransform);
+            _currentSacrifice = gameManager.GetCurrentSacrifice();
+            cultistsGroupController.MoveCultistsGroupToSacrifice();
         }
 
-        private void StartSacrificeFight()
+        private void TransportBody()
         {
-            //todo: add sacrificeData
-            //cultistsGroupController.StartSacrificeFight();
+            cultistsGroupController.TransportBody();
+        }
+
+        private void StartSacrificeFight(SacrificeController sacrificeController)
+        {
+            cultistsGroupController.StartSacrificeFight(sacrificeController);
         }
 
         private void AddCultistToGroup(CultistController cultistController)
@@ -76,7 +94,28 @@ namespace Cultist
 
         private void CultistController_OnReachedSacrifice()
         {
-            StartSacrificeFight();
+            if (_currentSacrifice.SacrificeState == SacrificeStates.Dead)
+            {
+                TransportBody();
+                return;
+            }
+            StartSacrificeFight(_currentSacrifice);
+        }
+
+        private void CultistController_OnReachedAltar()
+        {
+            OnReachedAltar?.Invoke();
+            cultistsGroupController.MoveCultistsToStartingPosition();
+        }
+
+        private void CultistGroupController_OnCultistLost()
+        {
+            LoseCultist();
+        }
+
+        private void CultistGroupController_OnFightWon()
+        {
+            TransportBody();
         }
     }
 }

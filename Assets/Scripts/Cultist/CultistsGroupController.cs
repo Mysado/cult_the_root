@@ -1,36 +1,49 @@
 namespace Cultist
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
+    using DG.Tweening;
     using UnityEngine;
 
     public class CultistsGroupController : MonoBehaviour
     {
         [SerializeField] private ParticleSystem fightParticleSystem;
+        [SerializeField] private Transform bodyAboveCultistsTransform;
+        [SerializeField] private float moveBodyAboveCultistsDuration;
+
+        public event Action OnFightWon;
+        public event Action OnCultistLost;
         
         private List<CultistController> _cultists = new();
         private SacrificeController _sacrificeController;
-        private readonly Vector2 cultistMinMaxMoveTimeOffset = new(0.1f, 0.3f);
-    
-    
+
         private const float FightDuration = 5f;
 
-        public void SetCultistGroup(List<CultistController> cultists)
+        public void SetReferences(List<CultistController> cultists)
         {
             _cultists = cultists;
         }
     
-        public void MoveCultistsGroupToSacrifice(Transform sacrificeTransform)
+        public void MoveCultistsGroupToSacrifice()
         {
             foreach (var cultistController in _cultists)
             {
-                var randomMoveTimeOffset = Random.Range(cultistMinMaxMoveTimeOffset.x, cultistMinMaxMoveTimeOffset.y);
-                cultistController.MoveToSacrifice(sacrificeTransform,randomMoveTimeOffset);
+                cultistController.MoveToSacrifice();
+            }
+        }
+        
+        public void MoveCultistsToStartingPosition()
+        {
+            foreach (var cultistController in _cultists)
+            {
+                cultistController.MoveToAltar();
             }
         }
 
-        public void TransportBody(SacrificeController sacrificeController)
+        public void TransportBody()
         {
+            MoveBodyAboveCultists();
             
         }
 
@@ -58,12 +71,25 @@ namespace Cultist
 
         private void WinFight()
         {
-            
+            OnFightWon?.Invoke();
         }
 
         private void LoseCultist()
         {
-            
+            OnCultistLost?.Invoke();
+        }
+
+        private void MoveBodyAboveCultists()
+        {
+            _sacrificeController.transform.DOMove(bodyAboveCultistsTransform.position, moveBodyAboveCultistsDuration).OnComplete(MoveCultistsGroupToAltar);
+        }
+        
+        private void MoveCultistsGroupToAltar()
+        {
+            foreach (var cultistController in _cultists)
+            {
+                cultistController.MoveToAltar();
+            }
         }
 
         private IEnumerator Fight()

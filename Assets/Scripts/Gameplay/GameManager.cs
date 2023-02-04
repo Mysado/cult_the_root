@@ -27,6 +27,7 @@
             moneyManager.OnMoneyAmountChanged += MoneyManager_OnMoneyAmountChanged;
             sacrificeManager.OnSacrificeSpawned += SacrificeManager_OnSacrificeSpawned;
             cultistsManager.OnCultistsAmountChanged += CultistsManager_OnCultistsAmountChanged;
+            cultistsManager.OnReachedAltar += CultistsManager_OnReachedAltar;
 
             uiManager.OnBuyCultist += UiManager_OnBuyCultist;
             uiManager.OnUpgradeCultists += UiManager_OnUpgradeCultists;
@@ -78,6 +79,11 @@
             return gameDataHolder.TrapDatas.First(x => x.TrapType == trapType);
         }
 
+        public SacrificeController GetCurrentSacrifice()
+        {
+            return sacrificeManager.GetSacrificeController();
+        }
+
         private void SetReferences()
         {
             flippersManager.AddFlippers();
@@ -113,9 +119,14 @@
             uiManager.OnCultistsAmountChanged(cultistsAmount);
         }
 
+        private void CultistsManager_OnReachedAltar()
+        {
+            Debug.Log("Hello, you have been sacrificed");
+        }
+
         private void UiManager_OnBuyCultist()
         {
-            cultistsManager.BuyCultist();
+            cultistsManager.SpawnCultist();
         }
 
         private void UiManager_OnUpgradeCultists()
