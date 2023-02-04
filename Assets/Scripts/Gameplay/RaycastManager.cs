@@ -37,13 +37,19 @@
                     break;
                 
                 case StaticManager.TAG_FLIPPER_SPOT:
+                    gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Buy Flipper for threefiddy");
                     if (gameManager.CanAfford(BuyableObjectType.FlipperSpot))
                     {
-                        gameManager.BuyFlipper(raycastHit.gameObject.transform);
-                        raycastHit.gameObject.SetActive(false);
+                        gameManager.BuyFlipper(raycastHit.transform);
+                        raycastHit.SetActive(false);
                     }
                     break;
-
+                case StaticManager.TAG_LEVER:
+                    gameManager.UseLever();
+                    break;
+                default:
+                    gameManager.UiManager.CloseTooltip();
+                    break;
             }
         }
     }

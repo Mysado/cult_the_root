@@ -9,21 +9,18 @@
         [SerializeField] private FlippersManager flippersManager;
         [SerializeField] private UiManager uiManager;
         [SerializeField] private PricesData pricesData;
+        [SerializeField] private SacrificeManager sacrificeManager;
+        [SerializeField] private DifficultyManager difficultyManager;
+        [SerializeField] private LeverManager leverManager;
 
-        #region RegionForSacrificeTransformTesting
         
-        public Transform testSacrificeTransform;
-
-        #endregion
-        
+        public UiManager UiManager => uiManager;
         public void Awake()
         {
             SetReferences();
-
+            InitializeManagers();
             moneyManager.OnMoneyAmountChanged += MoneyManager_OnMoneyAmountChanged;
-            
-            //todo: add trapdoor manager and subscribe this method to event
-            OnTrapdoorUsed();
+            sacrificeManager.OnSacrificeSpawned += SacrificeManager_OnSacrificeSpawned;
         }
         
         public bool CanAfford(BuyableObjectType objectType)
@@ -35,19 +32,23 @@
         {
             flippersManager.BuyFlipper(flipperSpotTransform);
             SpendMoney(pricesData.Prices.First(x => x.objectType == BuyableObjectType.FlipperSpot).price);
-            //for test
-            flippersManager.SetSacrificeTransformInFlippers(testSacrificeTransform);
+            flippersManager.SetSacrificeTransformInFlippers(sacrificeManager.GetSacrificeTransform());
         }
+
+        public int GetCurrentDifficulty()
+        {
+            return difficultyManager.CurrentDifficulty;
+        }
+
+        public void UseLever()
+        {
+            leverManager.UseLever();
+        }
+        
 
         private void SetReferences()
         {
             flippersManager.AddFlippers();
-        }
-
-        private void OnTrapdoorUsed()
-        {
-            //todo: get sacrifice transform from sacrifice manager;
-            flippersManager.SetSacrificeTransformInFlippers(testSacrificeTransform);
         }
 
         private void AddMoney(int addAmount)
@@ -69,6 +70,15 @@
         {
             uiManager.OnMoneyAmountChangedText(moneyAmount);
         }
+        
+        private void SacrificeManager_OnSacrificeSpawned(Transform sacrifice)
+        {
+            flippersManager.SetSacrificeTransformInFlippers(sacrifice);
+        }
 
+        private void InitializeManagers()
+        {
+            sacrificeManager.Initialize(this);
+        }
     }
 }
