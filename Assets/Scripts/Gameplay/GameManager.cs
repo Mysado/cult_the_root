@@ -13,6 +13,7 @@
         [SerializeField] private LeverManager leverManager;
         [SerializeField] private GameDataHolder gameDataHolder;
         [SerializeField] private TrapsManager trapsManager;
+        [SerializeField] private CameraManager cameraManager;
 
         public GameDataHolder GameDataHolder => gameDataHolder;
         public UiManager UiManager => uiManager;
@@ -22,6 +23,8 @@
             InitializeManagers();
             moneyManager.OnMoneyAmountChanged += MoneyManager_OnMoneyAmountChanged;
             sacrificeManager.OnSacrificeSpawned += SacrificeManager_OnSacrificeSpawned;
+            leverManager.OnSacrificeDropped += LeverManager_OnSacrificeDropped;
+            trapsManager.OnSacrificeReachedBottom += TrapsManager_OnSacrificeReachedBottom;
         }
         
         public bool CanAfford(BuyableObjectType objectType)
@@ -70,7 +73,6 @@
             return gameDataHolder.TrapDatas.First(x => x.TrapType == trapType);
         }
         
-
         private void SetReferences()
         {
             flippersManager.AddFlippers();
@@ -99,6 +101,16 @@
         private void SacrificeManager_OnSacrificeSpawned(Transform sacrifice)
         {
             flippersManager.SetSacrificeTransformInFlippers(sacrifice);
+        }
+
+        private void LeverManager_OnSacrificeDropped()
+        {
+            cameraManager.ChangeCameraLocation(CameraLocation.Middle);
+        }
+        
+        private void TrapsManager_OnSacrificeReachedBottom()
+        {
+            cameraManager.ChangeCameraLocation(CameraLocation.Down);
         }
 
         private void InitializeManagers()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -12,19 +13,12 @@ public class LeverManager : MonoBehaviour
     [SerializeField] private Vector3 openRotation;
     [SerializeField] private float openDuration;
     [SerializeField] private float closeDuration;
+    
+    public event Action OnSacrificeDropped; 
 
     private bool isInTransition;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     [Button]
     public void UseLever()
     {
@@ -44,6 +38,7 @@ public class LeverManager : MonoBehaviour
             if (collider.CompareTag("Sacrifice"))
             {
                 collider.GetComponent<SacrificeController>().FallIntoHole();
+                OnSacrificeDropped?.Invoke();
                 return;
             }
         }

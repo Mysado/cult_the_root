@@ -81,9 +81,6 @@
         {
             switch (raycastHit.tag)
             {
-                case StaticManager.TAG_FLIPPER:
-                    raycastHit.GetComponent<Flipper>().Interact();
-                    break;
                 case StaticManager.TAG_FLIPPER_SPOT:
                     gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Buy Flipper for threefiddy");
                     break;

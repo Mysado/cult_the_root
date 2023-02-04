@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8c9aa71dc7f6cc48bfd19a01d656544, type: 3}
   m_Name: BootTrap
   m_EditorClassIdentifier: 
-  TrapPrefab: {fileID: 0}
+  TrapPrefab: {fileID: 4292242415737526562, guid: dfcb7eb400cf45148b0c9508624901ff,
+    type: 3}
   TrapType: 0
   IsLethal: 0
   UpgradeCostAndDamageForThatLevel:
