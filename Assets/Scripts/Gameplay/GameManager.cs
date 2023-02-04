@@ -1,6 +1,7 @@
 ﻿namespace Gameplay
 {
     using System.Linq;
+    using Cultist;
     using UnityEngine;
 
     public class GameManager : MonoBehaviour
@@ -12,16 +13,24 @@
         [SerializeField] private DifficultyManager difficultyManager;
         [SerializeField] private LeverManager leverManager;
         [SerializeField] private GameDataHolder gameDataHolder;
+        [SerializeField] private CultistsManager cultistsManager;
         [SerializeField] private TrapsManager trapsManager;
 
         public GameDataHolder GameDataHolder => gameDataHolder;
+        
         public UiManager UiManager => uiManager;
+        
         public void Awake()
         {
             SetReferences();
             InitializeManagers();
             moneyManager.OnMoneyAmountChanged += MoneyManager_OnMoneyAmountChanged;
             sacrificeManager.OnSacrificeSpawned += SacrificeManager_OnSacrificeSpawned;
+            cultistsManager.OnCultistsAmountChanged += CultistsManager_OnCultistsAmountChanged;
+            cultistsManager.OnReachedAltar += CultistsManager_OnReachedAltar;
+
+            uiManager.OnBuyCultist += UiManager_OnBuyCultist;
+            uiManager.OnUpgradeCultists += UiManager_OnUpgradeCultists;
         }
         
         public bool CanAfford(BuyableObjectType objectType)
@@ -69,7 +78,11 @@
         {
             return gameDataHolder.TrapDatas.First(x => x.TrapType == trapType);
         }
-        
+
+        public SacrificeController GetCurrentSacrifice()
+        {
+            return sacrificeManager.GetSacrificeController();
+        }
 
         private void SetReferences()
         {
@@ -99,6 +112,26 @@
         private void SacrificeManager_OnSacrificeSpawned(Transform sacrifice)
         {
             flippersManager.SetSacrificeTransformInFlippers(sacrifice);
+        }
+
+        private void CultistsManager_OnCultistsAmountChanged(int cultistsAmount)
+        {
+            uiManager.OnCultistsAmountChanged(cultistsAmount);
+        }
+
+        private void CultistsManager_OnReachedAltar()
+        {
+            Debug.Log("Hello, you have been sacrificed");
+        }
+
+        private void UiManager_OnBuyCultist()
+        {
+            cultistsManager.SpawnCultist();
+        }
+
+        private void UiManager_OnUpgradeCultists()
+        {
+            cultistsManager.UpgradeCultists();
         }
 
         private void InitializeManagers()

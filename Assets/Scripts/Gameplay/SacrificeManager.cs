@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Gameplay;
 using Unity.Mathematics;
-using UnityEditor.Search;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,7 +11,7 @@ public class SacrificeManager : MonoBehaviour
 {
     [SerializeField] private Transform TreePosition;
     [SerializeField] private Transform ExitPosition;
-
+    
     public event Action<Transform> OnSacrificeSpawned; 
 
     private SacrificeController currentSacrifice;
@@ -30,6 +28,11 @@ public class SacrificeManager : MonoBehaviour
     public Transform GetSacrificeTransform()
     {
         return currentSacrifice.transform;
+    }
+
+    public SacrificeController GetSacrificeController()
+    {
+        return currentSacrifice;
     }
 
     private void Update()
