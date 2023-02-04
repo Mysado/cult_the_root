@@ -15,6 +15,7 @@
         [SerializeField] private GameDataHolder gameDataHolder;
         [SerializeField] private CultistsManager cultistsManager;
         [SerializeField] private TrapsManager trapsManager;
+        [SerializeField] private CameraManager cameraManager;
 
         public GameDataHolder GameDataHolder => gameDataHolder;
         
@@ -23,7 +24,6 @@
         public void Awake()
         {
             SetReferences();
-            InitializeManagers();
             moneyManager.OnMoneyAmountChanged += MoneyManager_OnMoneyAmountChanged;
             sacrificeManager.OnSacrificeSpawned += SacrificeManager_OnSacrificeSpawned;
             cultistsManager.OnCultistsAmountChanged += CultistsManager_OnCultistsAmountChanged;
@@ -31,6 +31,9 @@
 
             uiManager.OnBuyCultist += UiManager_OnBuyCultist;
             uiManager.OnUpgradeCultists += UiManager_OnUpgradeCultists;
+            leverManager.OnSacrificeDropped += LeverManager_OnSacrificeDropped;
+            trapsManager.OnSacrificeReachedBottom += TrapsManager_OnSacrificeReachedBottom;
+            InitializeManagers();
         }
         
         public bool CanAfford(BuyableObjectType objectType)
@@ -134,9 +137,21 @@
             cultistsManager.UpgradeCultists();
         }
 
+        private void LeverManager_OnSacrificeDropped()
+        {
+            cameraManager.ChangeCameraLocation(CameraLocation.Middle);
+        }
+        
+        private void TrapsManager_OnSacrificeReachedBottom()
+        {
+            cameraManager.ChangeCameraLocation(CameraLocation.Down);
+            cultistsManager.StartMovingCultistGroup();
+        }
+
         private void InitializeManagers()
         {
             sacrificeManager.Initialize(this);
+            moneyManager.Initialize();
         }
     }
 }

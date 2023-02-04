@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,14 @@ using Random = UnityEngine.Random;
 
 public class TrapsManager : MonoBehaviour
 {
+    [SerializeField] private BottomHoleController bottomHoleController;
     private List<TrapController> traps = new();
+    public event Action OnSacrificeReachedBottom;
+
+    private void Start()
+    {
+        bottomHoleController.OnSacrificeReachedBottom += OnSacrificeReachedBottom.Invoke;
+    }
 
     public void BuyTrap(Transform flipperSpotTransform, TrapData trapData)
     {

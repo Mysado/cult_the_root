@@ -1,26 +1,31 @@
 using System;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class MoneyManager : MonoBehaviour
 {
-    public event Action<int> OnMoneyAmountChanged; 
-    
-    private int _money = 25;
+    [SerializeField] private int currentMoney = 25;
+    public event Action<int> OnMoneyAmountChanged;
+
+    public void Initialize()
+    {
+        OnMoneyAmountChanged?.Invoke(currentMoney);
+    }
 
     public void AddMoney(int addAmount)
     {
-        _money += addAmount;
-        OnMoneyAmountChanged?.Invoke(_money);
+        currentMoney += addAmount;
+        OnMoneyAmountChanged?.Invoke(currentMoney);
     }
 
     public void SpendMoney(int spendAmount)
     {
-        _money -= spendAmount;
-        OnMoneyAmountChanged?.Invoke(_money);
+        currentMoney -= spendAmount;
+        OnMoneyAmountChanged?.Invoke(currentMoney);
     }
 
     public bool CanAfford(int moneyAmount)
     {
-        return _money >= moneyAmount;
+        return currentMoney >= moneyAmount;
     }
 }

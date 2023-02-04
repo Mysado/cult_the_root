@@ -14,6 +14,7 @@ public class UiManager : MonoBehaviour
         
     [SerializeField] private GameManager gameManager;
     [SerializeField] private TooltipsManager tooltipsManager;
+    [SerializeField] private GameObject trapSelectionMenu;
 
     public event Action OnBuyCultist;
     public event Action OnUpgradeCultists;
@@ -48,7 +49,10 @@ public class UiManager : MonoBehaviour
     {
         if (gameManager.CanAfford(BuyableObjectType.Cultist))
         {
-            OnBuyCultist?.Invoke();
+            if (gameManager.GetCurrentSacrifice().SacrificeState is SacrificeStates.IdleAtExit or SacrificeStates.IdleAtHole or SacrificeStates.WalkingToExit or SacrificeStates.WalkingToTree)
+            {
+                OnBuyCultist?.Invoke();
+            }
         }
     }
 
@@ -58,5 +62,16 @@ public class UiManager : MonoBehaviour
         {
             OnUpgradeCultists?.Invoke();
         }
+    }
+
+    public void ShowTrapSelection(Vector3 position)
+    {
+        trapSelectionMenu.SetActive(true);
+        trapSelectionMenu.transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, position);
+    }
+
+    public void CloseTrapSelection()
+    {
+        trapSelectionMenu.SetActive(false);
     }
 }

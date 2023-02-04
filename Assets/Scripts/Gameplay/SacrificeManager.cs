@@ -18,7 +18,7 @@ public class SacrificeManager : MonoBehaviour
     private GameManager gameManager;
     private bool startedExitTimer;
     private bool isInitialized;
-    // Start is called before the first frame update
+
     public void Initialize(GameManager gameManager)
     {
         this.gameManager = gameManager;

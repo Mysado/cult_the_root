@@ -15,3 +15,5 @@ MonoBehaviour:
   prices:
   - objectType: 0
     price: 25
+  - objectType: 1
+    price: 5
