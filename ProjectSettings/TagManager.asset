@@ -8,6 +8,8 @@ TagManager:
   - FlipperSpot
   - Trap
   - TrapSpot
+  - Sacrifice
+  - Lever
   layers:
   - Default
   - TransparentFX
