@@ -39,7 +39,6 @@ namespace Cultist
 
         public void MoveToAltar()
         {
-            Debug.Log("Move To Altar Yay");
             StartCoroutine(Move(_altarTransform.position, CultistMoveDestination.Altar, GetRandomTimeOffset()));
         }
 

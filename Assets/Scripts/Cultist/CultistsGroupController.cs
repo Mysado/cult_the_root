@@ -8,7 +8,7 @@ namespace Cultist
 
     public class CultistsGroupController : MonoBehaviour
     {
-        [SerializeField] private ParticleSystem fightParticleSystem;
+        [SerializeField] private List<ParticleSystem> fightParticleSystems;
         [SerializeField] private Transform bodyAboveCultistsTransform;
         [SerializeField] private Transform bodyAboveAltarTransform;
         [SerializeField] private float moveBodyAboveCultistsDuration;
@@ -53,7 +53,7 @@ namespace Cultist
 
         public void StartSacrificeFight()
         {
-            fightParticleSystem.Play();
+            fightParticleSystems.ForEach(x => x.Play());
             StartCoroutine(Fight());
         }
 
@@ -68,6 +68,9 @@ namespace Cultist
                 case SacrificeStates.FightingCultists:
                     LoseCultist();
                     WinFight();
+                    break;
+                default:
+                    Debug.LogError("Sacrifice neither healthy nor stunned nor dead");
                     break;
             }
         }
@@ -84,14 +87,12 @@ namespace Cultist
 
         private void DisableGravityForBody()
         {
-            Debug.Log("Disabling Grav");
             _sacrificeController.GetComponent<Rigidbody>().isKinematic = true;
             _sacrificeController.GetComponent<Rigidbody>().useGravity = false;
         }
 
         private void MoveBodyAboveCultists()
         {
-            Debug.Log("move body above cultists");
             _sacrificeController.transform.DOMove(bodyAboveCultistsTransform.position, moveBodyAboveCultistsDuration)
                                 .OnComplete(MoveCultistsGroupToAltar);
         }
@@ -103,13 +104,11 @@ namespace Cultist
         
         private void MoveCultistsGroupToAltar()
         {
-            Debug.Log("Move Cultists To Altar");
-            Debug.Log("Cultists amount: " + _cultists.Count);
             foreach (var cultistController in _cultists)
             {
                 cultistController.MoveToAltar();
             }
-            MoveBodyToAltar();
+            Invoke(nameof(MoveBodyToAltar),0.2f);
         }
 
         private IEnumerator Fight()
