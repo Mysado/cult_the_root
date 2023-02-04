@@ -7,7 +7,9 @@
     {
         [SerializeField] private Camera mainCamera;
         [SerializeField] private GameManager gameManager;
-        
+        [SerializeField] private LayerMask layerMask;
+
+        private Transform trapBuyTransform;
         private void Update()
         {
             var hitObject = CastRay();
@@ -28,7 +30,8 @@
         private GameObject CastRay()
         {
             var ray = mainCamera.ScreenPointToRay (Input.mousePosition);
-            if (Physics.Raycast(ray, out var hit, 100))
+            var layer = LayerMask.NameToLayer("Interactable");
+            if (Physics.Raycast(ray, out var hit, 100, 1 << layer))
             {
                 if (hit.transform.gameObject.layer == LayerMask.NameToLayer(StaticManager.LAYER_INTERACTABLE))
                 {
@@ -46,7 +49,6 @@
                 case StaticManager.TAG_FLIPPER:
                     raycastHit.GetComponent<Flipper>().Interact();
                     break;
-                
                 case StaticManager.TAG_FLIPPER_SPOT:
                     if (gameManager.CanAfford(BuyableObjectType.FlipperSpot))
                     {
@@ -59,11 +61,8 @@
                     break;
                 case StaticManager.TAG_TRAP_SPOT:
                     Debug.LogError("add trap selection");
-                    if (gameManager.CanAfford(TrapTypes.Boots,0))
-                    {
-                        gameManager.BuyTrap(raycastHit.transform,gameManager.GetTrapData(TrapTypes.Boots));
-                        raycastHit.SetActive(false);
-                    }
+                    trapBuyTransform = raycastHit.transform;
+                    gameManager.UiManager.ShowTrapSelection(trapBuyTransform.position);
                     break;
                 case StaticManager.TAG_TRAP:
                     var trap = raycastHit.GetComponent<TrapController>();
@@ -81,9 +80,6 @@
         {
             switch (raycastHit.tag)
             {
-                case StaticManager.TAG_FLIPPER:
-                    raycastHit.GetComponent<Flipper>().Interact();
-                    break;
                 case StaticManager.TAG_FLIPPER_SPOT:
                     gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Buy Flipper for threefiddy");
                     break;
@@ -94,6 +90,16 @@
                     var trap = raycastHit.GetComponent<TrapController>();
                     gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Upgrade "+trap.TrapDataModel.TrapType+" to " +trap.TrapDataModel.CurrentLevel+1 +" level for threefiddy");
                     break;
+            }
+        }
+
+        public void SelectTrapToBuy(int trapType)
+        {
+            if (gameManager.CanAfford((TrapTypes)trapType,0))
+            {
+                gameManager.BuyTrap(trapBuyTransform,gameManager.GetTrapData((TrapTypes)trapType));
+                trapBuyTransform.gameObject.SetActive(false);
+                gameManager.UiManager.CloseTrapSelection();
             }
         }
 

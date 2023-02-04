@@ -14,6 +14,7 @@ public class UiManager : MonoBehaviour
         
     [SerializeField] private GameManager gameManager;
     [SerializeField] private TooltipsManager tooltipsManager;
+    [SerializeField] private GameObject trapSelectionMenu;
 
     public event Action OnBuyCultist;
     public event Action OnUpgradeCultists;
@@ -58,5 +59,16 @@ public class UiManager : MonoBehaviour
         {
             OnUpgradeCultists?.Invoke();
         }
+    }
+
+    public void ShowTrapSelection(Vector3 position)
+    {
+        trapSelectionMenu.SetActive(true);
+        trapSelectionMenu.transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, position);
+    }
+
+    public void CloseTrapSelection()
+    {
+        trapSelectionMenu.SetActive(false);
     }
 }

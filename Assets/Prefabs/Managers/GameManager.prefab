@@ -423,6 +423,7 @@ MonoBehaviour:
   gameDataHolder: {fileID: 2179477301907635712}
   cultistsManager: {fileID: 4556787316216177997}
   trapsManager: {fileID: 2323498157001704029}
+  cameraManager: {fileID: 1788598907}
 --- !u!1 &598847770976295619
 GameObject:
   m_ObjectHideFlags: 0
@@ -5625,6 +5626,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1136920615311078646}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1788598907 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1136920616024452749, guid: fc2157948b7d7ea469a46d13a2a8fc31,
+    type: 3}
+  m_PrefabInstance: {fileID: 1136920615311078646}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3430911d945e6440a9cc8fe815a6f67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1177962067409229322
 PrefabInstance:
   m_ObjectHideFlags: 0
