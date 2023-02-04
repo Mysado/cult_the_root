@@ -78,7 +78,6 @@ namespace Cultist
 
         private void TransportBody()
         {
-            Debug.Log("Transporting");
             cultistsGroupController.TransportBody();
         }
 
@@ -107,14 +106,11 @@ namespace Cultist
             if (_cultistsReachedSacrifice < _cultists.Count-1)
             {
                 _cultistsReachedSacrifice++;
-                Debug.Log("CultistsCount: " + _cultists.Count);
-                Debug.Log("_cultistsReachedSacrifice: " + _cultistsReachedSacrifice);
                 return;
             }
             
             if (_currentSacrifice.SacrificeState == SacrificeStates.Dead)
             {
-                Debug.Log("Body Dead Start Transporting body");
                 TransportBody();
                 return;
             }

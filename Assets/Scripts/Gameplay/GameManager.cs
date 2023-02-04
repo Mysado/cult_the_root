@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using Cultist;
+    using DefaultNamespace.Altar;
     using UnityEngine;
 
     public class GameManager : MonoBehaviour
@@ -16,6 +17,7 @@
         [SerializeField] private CultistsManager cultistsManager;
         [SerializeField] private TrapsManager trapsManager;
         [SerializeField] private CameraManager cameraManager;
+        [SerializeField] private AltarManager altarManager;
 
         public GameDataHolder GameDataHolder => gameDataHolder;
         
@@ -33,6 +35,7 @@
             uiManager.OnUpgradeCultists += UiManager_OnUpgradeCultists;
             leverManager.OnSacrificeDropped += LeverManager_OnSacrificeDropped;
             trapsManager.OnSacrificeReachedBottom += TrapsManager_OnSacrificeReachedBottom;
+            altarManager.OnGainExperience += AltarManager_OnGainExperience;
             InitializeManagers();
         }
         
@@ -125,6 +128,7 @@
         private void CultistsManager_OnReachedAltar()
         {
             Debug.Log("Hello, you have been sacrificed");
+            altarManager.ReceiveBody(GetCurrentSacrifice());
         }
 
         private void UiManager_OnBuyCultist()
@@ -146,6 +150,11 @@
         {
             cameraManager.ChangeCameraLocation(CameraLocation.Down);
             cultistsManager.StartMovingCultistGroup();
+        }
+
+        private void AltarManager_OnGainExperience(int exp)
+        {
+            AddMoney(exp);
         }
 
         private void InitializeManagers()
