@@ -27,8 +27,9 @@ namespace Cultist
             _cultists = cultists;
         }
     
-        public void MoveCultistsGroupToSacrifice()
+        public void MoveCultistsGroupToSacrifice(SacrificeController sacrificeController)
         {
+            _sacrificeController = sacrificeController;
             foreach (var cultistController in _cultists)
             {
                 cultistController.MoveToSacrifice();
@@ -50,9 +51,8 @@ namespace Cultist
             
         }
 
-        public void StartSacrificeFight(SacrificeController sacrificeController)
+        public void StartSacrificeFight()
         {
-            _sacrificeController = sacrificeController;
             fightParticleSystem.Play();
             StartCoroutine(Fight());
         }
@@ -84,12 +84,14 @@ namespace Cultist
 
         private void DisableGravityForBody()
         {
+            Debug.Log("Disabling Grav");
             _sacrificeController.GetComponent<Rigidbody>().isKinematic = true;
             _sacrificeController.GetComponent<Rigidbody>().useGravity = false;
         }
 
         private void MoveBodyAboveCultists()
         {
+            Debug.Log("move body above cultists");
             _sacrificeController.transform.DOMove(bodyAboveCultistsTransform.position, moveBodyAboveCultistsDuration)
                                 .OnComplete(MoveCultistsGroupToAltar);
         }

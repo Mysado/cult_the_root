@@ -73,17 +73,18 @@ namespace Cultist
             {
                 _currentSacrifice.SacrificeState = SacrificeStates.FightingCultists;
             }
-            cultistsGroupController.MoveCultistsGroupToSacrifice();
+            cultistsGroupController.MoveCultistsGroupToSacrifice(_currentSacrifice);
         }
 
         private void TransportBody()
         {
+            Debug.Log("Transporting");
             cultistsGroupController.TransportBody();
         }
 
-        private void StartSacrificeFight(SacrificeController sacrificeController)
+        private void StartSacrificeFight()
         {
-            cultistsGroupController.StartSacrificeFight(sacrificeController);
+            cultistsGroupController.StartSacrificeFight();
         }
 
         private void AddCultistToGroup(CultistController cultistController)
@@ -113,10 +114,11 @@ namespace Cultist
             
             if (_currentSacrifice.SacrificeState == SacrificeStates.Dead)
             {
+                Debug.Log("Body Dead Start Transporting body");
                 TransportBody();
                 return;
             }
-            StartSacrificeFight(_currentSacrifice);
+            StartSacrificeFight();
 
             _cultistsReachedSacrifice = 0;
         }
