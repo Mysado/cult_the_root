@@ -8,7 +8,7 @@ public class SacrificeData : ScriptableObject
     public SacrificeTypes SacrificeType;
     public Difficulty MinimumDifficultyNeededToAppear;
     public int Hp;
-    public int PercentageHpLossToStun;
+    public float PercentageHpLossToStun;
     [InfoBox("cultists amount per 10% above stun threshold")]
     public int CultistsKillAmount;
     [InfoBox("The lower the better")]

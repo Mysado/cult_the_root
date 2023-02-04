@@ -17,17 +17,16 @@ public class CameraPositionParameters
     public float cameraSize;
     public float transitionDuration;
 }
-public class CameraController : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
     [SerializeField] private List<CameraPositionParameters> cameraPositions;
+    [SerializeField] private Camera camera;
     private CameraLocation cameraLocation;
-    private Camera camera;
 
     private bool isInTransition;
 
     void Start()
     {
-        camera = GetComponent<Camera>();
         cameraLocation = CameraLocation.Up;
         MoveCamera();
     }
@@ -56,7 +55,7 @@ public class CameraController : MonoBehaviour
         if (overrideTransition)
             transitionDuration = overrideDuration;
         isInTransition = true;
-        this.transform.DOMove(cameraPositions[(int)cameraLocation].cameraPosition.position, transitionDuration).onComplete = () => isInTransition = false;
+        camera.transform.DOMove(cameraPositions[(int)cameraLocation].cameraPosition.position, transitionDuration).onComplete = () => isInTransition = false;
         camera.DOOrthoSize(cameraPositionParameter.cameraSize, transitionDuration);
     }
 
