@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c9aa71dc7f6cc48bfd19a01d656544, type: 3}
+  m_Name: HammerTrap
+  m_EditorClassIdentifier: 
+  TrapPrefab: {fileID: 4292242415737526562, guid: 06915564d82c5034b8416eb56f3f5f21,
+    type: 3}
+  TrapType: 2
+  IsLethal: 0
+  UpgradeCostAndDamageForThatLevel:
+  - UpgradeCost: 10
+    DamageForThatLevel: 2
+  - UpgradeCost: 15
+    DamageForThatLevel: 4
+  - UpgradeCost: 25
+    DamageForThatLevel: 6

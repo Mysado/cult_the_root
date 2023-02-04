@@ -20,11 +20,11 @@
         public void Awake()
         {
             SetReferences();
-            InitializeManagers();
             moneyManager.OnMoneyAmountChanged += MoneyManager_OnMoneyAmountChanged;
             sacrificeManager.OnSacrificeSpawned += SacrificeManager_OnSacrificeSpawned;
             leverManager.OnSacrificeDropped += LeverManager_OnSacrificeDropped;
             trapsManager.OnSacrificeReachedBottom += TrapsManager_OnSacrificeReachedBottom;
+            InitializeManagers();
         }
         
         public bool CanAfford(BuyableObjectType objectType)
@@ -116,6 +116,7 @@
         private void InitializeManagers()
         {
             sacrificeManager.Initialize(this);
+            moneyManager.Initialize();
         }
     }
 }
