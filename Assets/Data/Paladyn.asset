@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f04669b3e721ffc42937df54b209004c, type: 3}
-  m_Name: Sacrifice
+  m_Name: Paladyn
   m_EditorClassIdentifier: 
-  SacrificeType: 0
+  SacrificePrefab: {fileID: 2027510459637396552, guid: 9e1a8d09eb7193a4a93430f423fc775e,
+    type: 3}
+  SacrificeType: 1
   MinimumDifficultyNeededToAppear: 0
   Hp: 5
   PercentageHpLossToStun: 20

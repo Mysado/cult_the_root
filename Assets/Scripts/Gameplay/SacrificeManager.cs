@@ -11,8 +11,6 @@ public class SacrificeManager : MonoBehaviour
 {
     [SerializeField] private Transform TreePosition;
     [SerializeField] private Transform ExitPosition;
-    [SerializeField] private List<SacrificeData> Sacrifices;
-    [SerializeField] private GameObject SacrificeObject;
     
     public event Action<Transform> OnSacrificeSpawned; 
 
@@ -55,10 +53,10 @@ public class SacrificeManager : MonoBehaviour
 
     private void SpawnSacrifice()
     {
-        var sacrifices = Sacrifices.Where(x => x.MinimumDifficultyNeededToAppear <= gameManager.GetCurrentDifficulty()).ToArray();
+        var sacrifices = gameManager.GameDataHolder.SacrificeDatas.Where(x => x.MinimumDifficultyNeededToAppear <= gameManager.GetCurrentDifficulty()).ToArray();
         var randomSacrifice = sacrifices[Random.Range(0, sacrifices.Length)];
         var dataModel = GenerateSacrifice(randomSacrifice);
-        currentSacrifice = Instantiate(SacrificeObject, ExitPosition.position, quaternion.identity).GetComponent<SacrificeController>();
+        currentSacrifice = Instantiate(randomSacrifice.SacrificePrefab, ExitPosition.position, quaternion.identity).GetComponent<SacrificeController>();
         currentSacrifice.SacrificeDataModel = dataModel;
         currentSacrifice.Move(TreePosition.position, currentSacrifice.SacrificeDataModel.WalkingSpeed, SacrificeStates.IdleAtHole);
         currentSacrifice.SacrificeState = SacrificeStates.WalkingToTree;

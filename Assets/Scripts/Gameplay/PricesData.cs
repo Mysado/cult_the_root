@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using UnityEngine;
-    [CreateAssetMenu(menuName = "ScriptableObjects/Prices")]
+    [CreateAssetMenu(menuName = "ScriptableObjects/MiscPrices")]
     public class PricesData : ScriptableObject
     {
         [SerializeField] private List<BuyableObjectData> prices;
@@ -21,8 +21,8 @@
     public enum BuyableObjectType
     {
         FlipperSpot,
-        TrapSpot,
         Cultist,
-        CultistsUpgrade
+        CultistUpgrade,
+        Trap
     }
 }

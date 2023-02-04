@@ -9,11 +9,14 @@
         [SerializeField] private MoneyManager moneyManager;
         [SerializeField] private FlippersManager flippersManager;
         [SerializeField] private UiManager uiManager;
-        [SerializeField] private PricesData pricesData;
         [SerializeField] private SacrificeManager sacrificeManager;
         [SerializeField] private DifficultyManager difficultyManager;
         [SerializeField] private LeverManager leverManager;
+        [SerializeField] private GameDataHolder gameDataHolder;
         [SerializeField] private CultistsManager cultistsManager;
+        [SerializeField] private TrapsManager trapsManager;
+
+        public GameDataHolder GameDataHolder => gameDataHolder;
         
         public UiManager UiManager => uiManager;
         
@@ -31,14 +34,33 @@
         
         public bool CanAfford(BuyableObjectType objectType)
         {
-            return moneyManager.CanAfford(pricesData.Prices.First(x => x.objectType == objectType).price);
+            return moneyManager.CanAfford(gameDataHolder.PricesData.Prices.First(x => x.objectType == objectType).price);
+        }
+
+        public bool CanAfford(TrapTypes trapType,int level)
+        {
+            return moneyManager.CanAfford(gameDataHolder.TrapDatas.First(x => x.TrapType == trapType).UpgradeCostAndDamageForThatLevel[level].UpgradeCost);
         }
 
         public void BuyFlipper(Transform flipperSpotTransform)
         {
             flippersManager.BuyFlipper(flipperSpotTransform);
-            SpendMoney(pricesData.Prices.First(x => x.objectType == BuyableObjectType.FlipperSpot).price);
+            SpendMoney(gameDataHolder.PricesData.Prices.First(x => x.objectType == BuyableObjectType.FlipperSpot).price);
             flippersManager.SetSacrificeTransformInFlippers(sacrificeManager.GetSacrificeTransform());
+        }
+        
+        public void BuyTrap(Transform trapSpotTransform, TrapData trapData)
+        {
+            trapsManager.BuyTrap(trapSpotTransform, trapData);
+            SpendMoney(gameDataHolder.TrapDatas.First(x => x.TrapType == trapData.TrapType).UpgradeCostAndDamageForThatLevel[0].UpgradeCost);
+        }
+        
+        public void UpgradeTrap(TrapController trapController)
+        {
+            var trapCost = gameDataHolder.TrapDatas.First(x => x.TrapType == trapController.TrapDataModel.TrapType)
+                .UpgradeCostAndDamageForThatLevel[trapController.TrapDataModel.CurrentLevel].UpgradeCost;
+            SpendMoney(trapCost);
+            trapsManager.UpgradeTrap(trapController);
         }
 
         public int GetCurrentDifficulty()
@@ -49,6 +71,11 @@
         public void UseLever()
         {
             leverManager.UseLever();
+        }
+
+        public TrapData GetTrapData(TrapTypes trapType)
+        {
+            return gameDataHolder.TrapDatas.First(x => x.TrapType == trapType);
         }
 
         private void SetReferences()

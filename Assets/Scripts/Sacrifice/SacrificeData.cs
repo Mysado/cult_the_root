@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/SacrificeData")]
 public class SacrificeData : ScriptableObject
 {
+    public GameObject SacrificePrefab;
     public SacrificeTypes SacrificeType;
     public int MinimumDifficultyNeededToAppear;
     public int Hp;
