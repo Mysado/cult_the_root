@@ -1,5 +1,6 @@
 ﻿namespace Gameplay
 {
+    using System.Linq;
     using UnityEngine;
 
     public class GameManager : MonoBehaviour
@@ -7,23 +8,35 @@
         [SerializeField] private MoneyManager moneyManager;
         [SerializeField] private FlippersManager flippersManager;
         [SerializeField] private UiManager uiManager;
+        [SerializeField] private PricesData pricesData;
 
         #region RegionForSacrificeTransformTesting
         
         public Transform testSacrificeTransform;
 
         #endregion
-
-        private void Awake()
+        
+        public void Awake()
         {
             SetReferences();
-            
-            flippersManager.OnFlipperBuy += FlippersManager_OnFlipperBuy;
-            
+
             moneyManager.OnMoneyAmountChanged += MoneyManager_OnMoneyAmountChanged;
             
             //todo: add trapdoor manager and subscribe this method to event
             OnTrapdoorUsed();
+        }
+        
+        public bool CanAfford(BuyableObjectType objectType)
+        {
+            return moneyManager.CanAfford(pricesData.Prices.First(x => x.objectType == objectType).price);
+        }
+
+        public void BuyFlipper(Transform flipperSpotTransform)
+        {
+            flippersManager.BuyFlipper(flipperSpotTransform);
+            SpendMoney(pricesData.Prices.First(x => x.objectType == BuyableObjectType.FlipperSpot).price);
+            //for test
+            flippersManager.SetSacrificeTransformInFlippers(testSacrificeTransform);
         }
 
         private void SetReferences()
