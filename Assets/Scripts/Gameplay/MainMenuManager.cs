@@ -13,6 +13,8 @@ public class MainMenuManager : MonoBehaviour
     [InfoBox("Button References")]
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button exitGameButton;
+    [InfoBox("Audio Source")]
+    [SerializeField] private AudioSource buttonsAudioSource;
 
     private void Awake()
     {
@@ -36,11 +38,13 @@ public class MainMenuManager : MonoBehaviour
 
     private void StartGame()
     {
+        buttonsAudioSource.Play();
         SceneManager.LoadScene("GameplayScene");
     }
     
     private void ExitGame()
     {
+        buttonsAudioSource.Play();
         Application.Quit();
     }
 }
