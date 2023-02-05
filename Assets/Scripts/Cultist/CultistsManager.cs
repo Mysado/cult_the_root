@@ -69,6 +69,8 @@ namespace Cultist
         public void StartMovingCultistGroup()
         {
             _currentSacrifice = gameManager.GetCurrentSacrifice();
+            if(_currentSacrifice.SacrificeState is not (SacrificeStates.Dead or SacrificeStates.Stunned or SacrificeStates.FightingCultists or SacrificeStates.FallingDown))
+                return;
             if (_currentSacrifice.SacrificeState is not (SacrificeStates.Stunned or SacrificeStates.Dead))
             {
                 _currentSacrifice.SacrificeState = SacrificeStates.FightingCultists;
@@ -108,15 +110,13 @@ namespace Cultist
                 _cultistsReachedSacrifice++;
                 return;
             }
-            
+            _cultistsReachedSacrifice = 0;
             if (_currentSacrifice.SacrificeState == SacrificeStates.Dead)
             {
                 TransportBody();
                 return;
             }
             StartSacrificeFight();
-
-            _cultistsReachedSacrifice = 0;
         }
 
         private void CultistController_OnReachedAltar()
@@ -126,7 +126,7 @@ namespace Cultist
                 _cultistsReachedAltar++;
                 return;
             }
-            
+            _cultistsReachedAltar = 0;
             OnReachedAltar?.Invoke();
             cultistsGroupController.MoveCultistsToStartingPosition();
             _cultistsReachedAltar = 0;

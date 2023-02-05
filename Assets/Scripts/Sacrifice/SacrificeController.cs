@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public enum SacrificeStates
 {
@@ -17,8 +18,9 @@ public enum SacrificeStates
 }
 public class SacrificeController : MonoBehaviour
 {
-    [SerializeField] private Rigidbody rigidbody;
+    [FormerlySerializedAs("rigidbody")] [SerializeField] private Rigidbody rb;
     [SerializeField] private SacrificeAnimationController sacrificeAnimationController;
+    [SerializeField] private int hp;
     public SacrificeStates SacrificeState;
     public SacrificeDataModel SacrificeDataModel;
 
@@ -44,6 +46,8 @@ public class SacrificeController : MonoBehaviour
         {
             sacrificeAnimationController.SetWalkBool(false);
         }
+
+        hp = SacrificeDataModel.Hp;
     }
 
     public void Move(Vector3 targetPosition, float walkingDuration, SacrificeStates stateAfterMovement)
@@ -55,15 +59,20 @@ public class SacrificeController : MonoBehaviour
     {
         SacrificeState = SacrificeStates.FallingDown;
         transform.DOKill();
-        rigidbody.isKinematic = false;
-        rigidbody.useGravity = true;
+        rb.isKinematic = false;
+        rb.useGravity = true;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool isLethal)
     {
         SacrificeDataModel.Hp -= damage;
         if (SacrificeDataModel.Hp <= 0)
-            SacrificeState = SacrificeStates.Dead;
+        {
+            if (!isLethal)
+                SacrificeDataModel.Hp = 1;
+            else
+                SacrificeState = SacrificeStates.Dead;
+        }        
         else if (SacrificeDataModel.Hp < SacrificeDataModel.MaxHp * SacrificeDataModel.PercentageHpLossToStun)
             SacrificeState = SacrificeStates.Stunned;
     }

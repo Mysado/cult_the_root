@@ -30,6 +30,11 @@ public class TrapsManager : MonoBehaviour
         trapToUpgrade.UpgradeTrap();
     }
 
+    public void ChangeSpinDirection(TrapController trapToChange)
+    {
+        trapToChange.ChangeSpinDirection();
+    }
+
     private TrapDataModel CreateTrapDataModel(TrapData trapData)
     {
         return new TrapDataModel(

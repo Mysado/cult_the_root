@@ -20,6 +20,10 @@
                 {
                     Interact(hitObject);
                 }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    TryToChangeTrapSpinDirection(hitObject);
+                }
             }
             else
             {
@@ -60,14 +64,12 @@
                     gameManager.UseLever();
                     break;
                 case StaticManager.TAG_TRAP_SPOT:
-                    Debug.LogError("add trap selection");
                     trapBuyTransform = raycastHit.transform;
                     gameManager.UiManager.ShowTrapSelection(trapBuyTransform.position);
                     break;
                 case StaticManager.TAG_TRAP:
                     var trap = raycastHit.GetComponent<TrapController>();
-                    Debug.LogError("add trap selection");
-                    if (gameManager.CanAfford(TrapTypes.Boots,0))
+                    if (gameManager.CanAfford(trap.TrapDataModel.TrapType,0))
                     {
                         gameManager.UpgradeTrap(trap);
                     }
@@ -87,8 +89,17 @@
                     break;
                 case StaticManager.TAG_TRAP:
                     var trap = raycastHit.GetComponent<TrapController>();
-                    gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Upgrade "+trap.TrapDataModel.TrapType+" to " +trap.TrapDataModel.CurrentLevel+1 +" level for threefiddy");
+                    gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Upgrade "+trap.TrapDataModel.TrapType+" to " + (trap.TrapDataModel.CurrentLevel+1) +" level for threefiddy");
                     break;
+            }
+        }
+
+        private void TryToChangeTrapSpinDirection(GameObject raycastHit)
+        {
+            if(raycastHit.CompareTag(StaticManager.TAG_TRAP))
+            {
+                var trap = raycastHit.GetComponent<TrapController>();
+                gameManager.ChangeTrapSpinDirection(trap);
             }
         }
 

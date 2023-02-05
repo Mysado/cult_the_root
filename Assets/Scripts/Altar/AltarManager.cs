@@ -38,7 +38,7 @@
         private void MoveBodyToRandomCorpseSlot()
         {
             var randomCorpseSlot = GetRandomNotOccupiedCorpseSlot();
-            _sacrificeController.transform.DOMove(randomCorpseSlot.transform.position, bodyToCorpseSlotMoveDuration).OnComplete(GainExpFromCorpse);
+            _sacrificeController.transform.DOMove(randomCorpseSlot.transform.position, bodyToCorpseSlotMoveDuration).OnComplete(() => GainExpFromCorpse(_sacrificeController.SacrificeDataModel.ExpWorth, _sacrificeController.SacrificeState));
             randomCorpseSlot.Occupied = true;
         }
 
@@ -48,15 +48,15 @@
             return notOccupiedCorpseSlots[Random.Range(0, notOccupiedCorpseSlots.Count)];
         }
 
-        private void GainExpFromCorpse()
+        private void GainExpFromCorpse(int expWorth, SacrificeStates state)
         {
-            if (_sacrificeController.SacrificeState == SacrificeStates.Dead)
+            if (state == SacrificeStates.Dead)
             {
-                OnGainExperience?.Invoke(_sacrificeController.SacrificeDataModel.ExpWorth/2);
+                OnGainExperience?.Invoke(expWorth/2);
             } 
             else
             {
-                OnGainExperience?.Invoke(_sacrificeController.SacrificeDataModel.ExpWorth);
+                OnGainExperience?.Invoke(expWorth);
             }
         }
     }

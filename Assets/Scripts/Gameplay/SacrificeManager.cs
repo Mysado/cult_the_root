@@ -18,6 +18,8 @@ public class SacrificeManager : MonoBehaviour
     private GameManager gameManager;
     private bool startedExitTimer;
     private bool isInitialized;
+    private TweenCallback returnTween;
+    private bool inProgressOfSpawning;
 
     public void Initialize(GameManager gameManager)
     {
@@ -35,10 +37,17 @@ public class SacrificeManager : MonoBehaviour
         return currentSacrifice;
     }
 
+    public void SacrificeSacrificed()
+    {
+        currentSacrifice = null;
+        ResetValues();
+    }
+
     private void Update()
     {
-        if (!currentSacrifice || !isInitialized)
+        if (!currentSacrifice && isInitialized && !inProgressOfSpawning)
         {
+            inProgressOfSpawning = true;
             SpawnSacrifice();
             return;
         }
@@ -47,7 +56,7 @@ public class SacrificeManager : MonoBehaviour
         {
             startedExitTimer = true;
             var myFloat = 1;
-            DOTween.To(()=> myFloat, x=> myFloat = x, 52, currentSacrifice.SacrificeDataModel.WaitingTimeAtTree).onComplete = MoveSacrificeToExit;
+            returnTween = DOTween.To(()=> myFloat, x=> myFloat = x, 52, currentSacrifice.SacrificeDataModel.WaitingTimeAtTree).onComplete = MoveSacrificeToExit;
         }
 
         if (currentSacrifice && currentSacrifice.SacrificeState == SacrificeStates.IdleAtExit)
@@ -66,6 +75,7 @@ public class SacrificeManager : MonoBehaviour
         currentSacrifice.Move(TreePosition.position, currentSacrifice.SacrificeDataModel.WalkingSpeed, SacrificeStates.IdleAtHole);
         currentSacrifice.SacrificeState = SacrificeStates.WalkingToTree;
         OnSacrificeSpawned?.Invoke(currentSacrifice.transform);
+        inProgressOfSpawning = false;
     }
 
     private void MoveSacrificeToExit()
@@ -81,11 +91,13 @@ public class SacrificeManager : MonoBehaviour
     private void DespawnSacrifice()
     {
         Destroy(currentSacrifice.gameObject);
+        ResetValues();
     }
 
     private SacrificeDataModel GenerateSacrifice(SacrificeData sacrificeData)
     {
         var difficultyMultiplier = gameManager.GetCurrentDifficulty();
+        Debug.Log(Mathf.CeilToInt(sacrificeData.Hp * sacrificeData.HpMultiplierOnDifficulty * difficultyMultiplier));
         return new SacrificeDataModel(
              Mathf.CeilToInt(sacrificeData.Hp * sacrificeData.HpMultiplierOnDifficulty * difficultyMultiplier),
             sacrificeData.PercentageHpLossToStun,
@@ -95,5 +107,12 @@ public class SacrificeManager : MonoBehaviour
             sacrificeData.SacrificeType,
              sacrificeData.WaitingTimeAtTree
         );
+    }
+
+    private void ResetValues()
+    {
+        startedExitTimer = false;
+        DOTween.Kill(returnTween);
+        inProgressOfSpawning = false;
     }
 }

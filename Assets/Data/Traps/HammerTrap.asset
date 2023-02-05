@@ -15,7 +15,7 @@ MonoBehaviour:
   TrapPrefab: {fileID: 5832333901316733316, guid: 7a0e314932cef904aac78ae2b78ce0c9,
     type: 3}
   TrapType: 2
-  IsLethal: 0
+  IsLethal: 1
   UpgradeCostAndDamageForThatLevel:
   - UpgradeCost: 10
     DamageForThatLevel: 2
