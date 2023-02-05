@@ -34,8 +34,7 @@
             lifeForceAbsorptionParticles.Play();
             foreach (var corpseSlot in corpseSlots)
             {
-                corpseSlot.BodyInSlot.transform.DOScale(Vector3.zero, 1);
-                Destroy(corpseSlot.BodyInSlot, 1);
+                corpseSlot.BodyInSlot.transform.DOScale(Vector3.zero, 1).OnComplete(() => Destroy(corpseSlot.BodyInSlot));
                 corpseSlot.Occupied = false;
                 corpseSlot.BodyInSlot = null;
             }

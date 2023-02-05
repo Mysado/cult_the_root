@@ -174,7 +174,7 @@ namespace Gameplay
         private void AltarManager_OnGainExperience(int exp)
         {
             AddMoney(exp);
-            cameraManager.MoveCameraToSurface();
+            sacrificeManager.SacrificeSacrificed();
         }
 
         private void CameraManager_OnCameraReachedSurfaceAfterSacrifice()
@@ -185,12 +185,14 @@ namespace Gameplay
         private void AltarManager_OnAltarEmptied()
         {
             difficultyManager.IncreaseDifficulty();
+            cameraManager.MoveCameraToSurface();
         }
 
         private void InitializeManagers()
         {
             sacrificeManager.Initialize(this);
             moneyManager.Initialize();
+            cultistsManager.Initialize();
         }
     }
 }

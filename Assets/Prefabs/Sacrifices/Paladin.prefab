@@ -48,8 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21423a0607d974249b246158e3e107dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 6366569206426306315}
+  rb: {fileID: 6366569206426306315}
   sacrificeAnimationController: {fileID: 1425511040982134893}
+  hp: 0
   SacrificeState: 0
 --- !u!135 &939325741384982941
 SphereCollider:
@@ -62,8 +63,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 0.4, z: 0}
 --- !u!54 &6366569206426306315
 Rigidbody:
   m_ObjectHideFlags: 0

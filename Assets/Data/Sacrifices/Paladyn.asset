@@ -15,7 +15,7 @@ MonoBehaviour:
   SacrificePrefab: {fileID: 2027510459637396552, guid: 9e1a8d09eb7193a4a93430f423fc775e,
     type: 3}
   SacrificeType: 1
-  MinimumDifficultyNeededToAppear: 0
+  MinimumDifficultyNeededToAppear: 2
   Hp: 5
   PercentageHpLossToStun: 20
   CultistsKillAmount: 1

@@ -26,7 +26,7 @@ namespace Cultist
         private readonly List<CultistController> _cultists = new();
         private readonly Vector2 _cultistSpawnPositionOffsetMinMax = new(0.1f, 2);
 
-        private void Awake()
+        public void Initialize()
         {
             cultistsGroupController.SetReferences(_cultists);
             cultistsGroupController.OnFightWon += CultistGroupController_OnFightWon;
@@ -53,7 +53,9 @@ namespace Cultist
 
         public void LoseCultist()
         {
-            _cultists.RemoveAt(Random.Range(0, _cultists.Count));
+            var cultistToRemove = _cultists[Random.Range(0, _cultists.Count)];
+            cultistToRemove.GetComponent<Animator>().SetTrigger("Dead");
+            _cultists.Remove(cultistToRemove);
             OnCultistsAmountChanged?.Invoke(_cultists.Count);
             //add cultist die sound and maybe some animation?
         }

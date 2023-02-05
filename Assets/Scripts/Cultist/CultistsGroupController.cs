@@ -20,7 +20,7 @@ namespace Cultist
         private SacrificeController _sacrificeController;
 
         private const float FightDuration = 1f;
-        private const float MovingToAltarDuration = 1.0f;
+        private const float MovingToAltarDuration = 3.0f;
 
         public void SetReferences(List<CultistController> cultists)
         {
@@ -32,7 +32,7 @@ namespace Cultist
             _sacrificeController = sacrificeController;
             foreach (var cultistController in _cultists)
             {
-                cultistController.MoveToSacrifice();
+                cultistController.MoveToSacrifice(_sacrificeController.transform);
             }
         }
         

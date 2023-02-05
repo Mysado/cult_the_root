@@ -361,6 +361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7904975267388178015}
   - component: {fileID: 434463032113429976}
+  - component: {fileID: 178494718}
   m_Layer: 0
   m_Name: okultysta
   m_TagString: Untagged
@@ -397,6 +398,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc60467c9dc9874595a653afb88ecd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &178494718
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7421876879752946917}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5b9a30c908e51ab439b7839fbef739a0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &7579471193049982337
 GameObject:
   m_ObjectHideFlags: 0

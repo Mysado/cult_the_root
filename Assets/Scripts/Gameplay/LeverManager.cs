@@ -13,7 +13,8 @@ public class LeverManager : MonoBehaviour
     [SerializeField] private Vector3 openRotation;
     [SerializeField] private float openDuration;
     [SerializeField] private float closeDuration;
-    
+    [SerializeField] private Animator leverCultistAnimator;
+
     public event Action OnSacrificeDropped; 
 
     private bool isInTransition;
@@ -24,10 +25,12 @@ public class LeverManager : MonoBehaviour
     {
         if(isInTransition)
             return;
+        isInTransition = true;
         var myFloat = 0;
         trapDoor.DOLocalRotate(openRotation, openDuration).onComplete = CloseTrapdoor;
         leverHandle.DOLocalRotate(new Vector3(0, 0, -30), 0.5f);
         DOTween.To(()=> myFloat, x=> myFloat = x, 52, openDuration/10).onComplete = CheckIfSacrificeIsOnTrapDoor;
+        leverCultistAnimator.SetTrigger("PullLever");
     }
 
     private void CheckIfSacrificeIsOnTrapDoor()
