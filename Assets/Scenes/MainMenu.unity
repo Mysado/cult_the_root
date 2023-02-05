@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 17918035}
   - component: {fileID: 17918034}
   - component: {fileID: 17918033}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: SideMenuPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1274,7 +1274,7 @@ GameObject:
   - component: {fileID: 661650522}
   - component: {fileID: 661650521}
   - component: {fileID: 661650523}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: StartGameButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1968,7 +1968,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 215
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2212,7 +2212,7 @@ GameObject:
   - component: {fileID: 1059887947}
   - component: {fileID: 1059887946}
   - component: {fileID: 1059887945}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ExitGameButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2334,7 +2334,7 @@ GameObject:
   - component: {fileID: 1082298258}
   - component: {fileID: 1082298260}
   - component: {fileID: 1082298259}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3231,7 +3231,7 @@ GameObject:
   - component: {fileID: 1447264258}
   - component: {fileID: 1447264257}
   - component: {fileID: 1447264256}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: MainMenuCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3337,7 +3337,7 @@ GameObject:
   - component: {fileID: 1522292223}
   - component: {fileID: 1522292225}
   - component: {fileID: 1522292224}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
