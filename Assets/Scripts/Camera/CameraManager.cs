@@ -41,24 +41,28 @@ public class CameraManager : MonoBehaviour
             return;
         if (Input.mouseScrollDelta.y > 0 && cameraLocation != CameraLocation.Up)
         {
+            isInTransition = true;
             cameraLocation++;
             MoveCamera();
+            return;
 
         }
         else if (Input.mouseScrollDelta.y < 0 && cameraLocation != CameraLocation.Down)
         {
+            isInTransition = true;
             cameraLocation--;
             MoveCamera();
+            return;
         }
     }
 
     private void MoveCamera(bool overrideTransition = false, float overrideDuration = 0)
     {
+        isInTransition = true;
         var cameraPositionParameter = cameraPositions[(int)cameraLocation];
         var transitionDuration = cameraPositionParameter.transitionDuration;
         if (overrideTransition)
             transitionDuration = overrideDuration;
-        isInTransition = true;
         mainCamera.transform.DOMove(cameraPositions[(int)cameraLocation].cameraPosition.position, transitionDuration).onComplete = () => isInTransition = false;
         mainCamera.DOOrthoSize(cameraPositionParameter.cameraSize, transitionDuration);
     }

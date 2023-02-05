@@ -16,13 +16,13 @@ MonoBehaviour:
     type: 3}
   SacrificeType: 1
   MinimumDifficultyNeededToAppear: 2
-  Hp: 5
-  PercentageHpLossToStun: 20
+  Hp: 10
+  PercentageHpLossToStun: 50
   CultistsKillAmount: 1
-  WalkingSpeed: 10
-  ExpWorth: 50
+  WalkingSpeed: 6
+  ExpWorth: 10
   WaitingTimeAtTree: 5
-  ExpMultiplierOnDifficulty: 5
+  ExpMultiplierOnDifficulty: 3
   CultistsKillAmountOnDifficulty: 1
   HpMultiplierOnDifficulty: 1
   ScreamsOfPain:

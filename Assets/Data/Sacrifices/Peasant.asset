@@ -20,9 +20,9 @@ MonoBehaviour:
   PercentageHpLossToStun: 20
   CultistsKillAmount: 1
   WalkingSpeed: 10
-  ExpWorth: 50
+  ExpWorth: 7
   WaitingTimeAtTree: 5
-  ExpMultiplierOnDifficulty: 5
+  ExpMultiplierOnDifficulty: 2
   CultistsKillAmountOnDifficulty: 1
   HpMultiplierOnDifficulty: 1
   ScreamsOfPain:

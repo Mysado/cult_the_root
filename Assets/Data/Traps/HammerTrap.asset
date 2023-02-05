@@ -19,7 +19,13 @@ MonoBehaviour:
   UpgradeCostAndDamageForThatLevel:
   - UpgradeCost: 10
     DamageForThatLevel: 2
-  - UpgradeCost: 15
+  - UpgradeCost: 10
     DamageForThatLevel: 4
-  - UpgradeCost: 25
+  - UpgradeCost: 20
     DamageForThatLevel: 6
+  - UpgradeCost: 35
+    DamageForThatLevel: 8
+  - UpgradeCost: 50
+    DamageForThatLevel: 10
+  - UpgradeCost: 70
+    DamageForThatLevel: 12

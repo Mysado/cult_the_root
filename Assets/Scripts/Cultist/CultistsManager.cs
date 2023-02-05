@@ -113,7 +113,7 @@ namespace Cultist
                 return;
             }
             _cultistsReachedSacrifice = 0;
-            if (_currentSacrifice.SacrificeState == SacrificeStates.Dead)
+            if (_currentSacrifice.SacrificeState == SacrificeStates.Dead || _currentSacrifice.SacrificeState == SacrificeStates.Stunned)
             {
                 TransportBody();
                 return;

@@ -18,8 +18,14 @@ MonoBehaviour:
   IsLethal: 0
   UpgradeCostAndDamageForThatLevel:
   - UpgradeCost: 10
-    DamageForThatLevel: 2
-  - UpgradeCost: 15
-    DamageForThatLevel: 4
+    DamageForThatLevel: 1
   - UpgradeCost: 25
+    DamageForThatLevel: 2
+  - UpgradeCost: 35
+    DamageForThatLevel: 4
+  - UpgradeCost: 50
     DamageForThatLevel: 6
+  - UpgradeCost: 100
+    DamageForThatLevel: 8
+  - UpgradeCost: 150
+    DamageForThatLevel: 10

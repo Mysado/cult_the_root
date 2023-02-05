@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using DG.Tweening;
 
 namespace Gameplay
@@ -23,6 +24,7 @@ namespace Gameplay
         [SerializeField] private AltarManager altarManager;
         [SerializeField] private SkinnedMeshRenderer treeRenderer;
         [SerializeField] private SoundManager soundManager;
+        [SerializeField] private TreeManager treeManager;
 
         public GameDataHolder GameDataHolder => gameDataHolder;
         
@@ -46,6 +48,7 @@ namespace Gameplay
             altarManager.OnGainExperience += AltarManager_OnGainExperience;
             cameraManager.OnCameraReachedSurfaceAfterSacrifice += CameraManager_OnCameraReachedSurfaceAfterSacrifice;
             altarManager.OnAltarEmptied += AltarManager_OnAltarEmptied;
+            treeManager.OnMaxLevelReached += TreeManager_OnMaxLevelReached;
             InitializeManagers();
             DOTween.To(() => treeBlendShapeValue, x => treeBlendShapeValue = x, 100, 2).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
 
@@ -66,6 +69,17 @@ namespace Gameplay
         {
             PlaySfx(SfxType.SlotClick);
             return moneyManager.CanAfford(gameDataHolder.TrapDatas.First(x => x.TrapType == trapType).UpgradeCostAndDamageForThatLevel[level].UpgradeCost);
+        }
+
+        public int GetCost(BuyableObjectType objectType)
+        {
+            return gameDataHolder.PricesData.Prices.First(x => x.objectType == objectType).price;
+        }
+        
+        public int GetCost(TrapTypes trapType,int level)
+        {
+            return gameDataHolder.TrapDatas.First(x => x.TrapType == trapType).UpgradeCostAndDamageForThatLevel[level]
+                .UpgradeCost;
         }
 
         public void BuyFlipper(Transform flipperSpotTransform)
@@ -210,14 +224,19 @@ namespace Gameplay
 
         private void CameraManager_OnCameraReachedSurfaceAfterSacrifice()
         {
-            sacrificeManager.SacrificeSacrificed();
+            //sacrificeManager.SacrificeSacrificed();
         }
         
         private void AltarManager_OnAltarEmptied()
         {
             soundManager.PlaySfx(SfxType.LifeDrain);
             difficultyManager.IncreaseDifficulty();
+            treeManager.DelayedLevel();
             cameraManager.MoveCameraToSurface();
+        }
+        private void TreeManager_OnMaxLevelReached()
+        {
+            sacrificeManager.gameObject.SetActive(false);
         }
 
         private void InitializeManagers()

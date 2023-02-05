@@ -44,6 +44,7 @@
         private void MoveBodyToRandomCorpseSlot()
         {
             var randomCorpseSlot = GetRandomNotOccupiedCorpseSlot();
+            _sacrificeController.DisableSacrificeHp();
             _sacrificeController.transform.DOMove(randomCorpseSlot.transform.position, bodyToCorpseSlotMoveDuration).OnComplete(() => GainExpFromCorpse(_sacrificeController.SacrificeDataModel.ExpWorth, _sacrificeController.SacrificeState));
             randomCorpseSlot.Occupied = true;
             randomCorpseSlot.BodyInSlot = _sacrificeController.gameObject;

@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public enum SacrificeStates
@@ -22,17 +24,29 @@ public class SacrificeController : MonoBehaviour
 {
     [FormerlySerializedAs("rigidbody")] [SerializeField] private Rigidbody rb;
     [SerializeField] private SacrificeAnimationController sacrificeAnimationController;
-    [SerializeField] private int hp;
+    [SerializeField] private Color32 healthyHpColor;
+    [SerializeField] private Color32 stunnedHpColor;
+    [SerializeField] private TextMeshProUGUI hpText;
+    [SerializeField] private Image hpBackground;
+    [SerializeField] private Slider hpSlider;
+    [SerializeField] private Image sliderBackground;
+    [SerializeField] private GameObject canvasParent;
     [SerializeField]
     public SacrificeStates SacrificeState;
     public SacrificeDataModel SacrificeDataModel;
-    [SerializeField] private AudioSource sacrificeAudioSource;
+    private Camera mainCamera;
 
-    // Start is called before the first frame update
-    void Start()
+    public void Initialize()
     {
-        
+        hpText.text = SacrificeDataModel.Hp + "/" + SacrificeDataModel.MaxHp;
+        hpSlider.maxValue = SacrificeDataModel.MaxHp;
+        hpSlider.value = SacrificeDataModel.Hp;
+        hpSlider.minValue = 0;
+        hpBackground.color = healthyHpColor;
+        sliderBackground.color = healthyHpColor;
+        mainCamera = Camera.main;
     }
+    [SerializeField] private AudioSource sacrificeAudioSource;
 
     // Update is called once per frame
     void Update()
@@ -51,7 +65,7 @@ public class SacrificeController : MonoBehaviour
             sacrificeAnimationController.SetWalkBool(false);
         }
 
-        hp = SacrificeDataModel.Hp;
+        canvasParent.transform.eulerAngles = new Vector3(0,-90,0);
     }
 
     public void Move(Vector3 targetPosition, float walkingDuration, SacrificeStates stateAfterMovement)
@@ -80,7 +94,18 @@ public class SacrificeController : MonoBehaviour
                 SacrificeState = SacrificeStates.Dead;
         }        
         else if (SacrificeDataModel.Hp < SacrificeDataModel.MaxHp * SacrificeDataModel.PercentageHpLossToStun)
+        {
+            hpBackground.color = stunnedHpColor;
+            sliderBackground.color = stunnedHpColor;
             SacrificeState = SacrificeStates.Stunned;
+    }
+        hpText.text = SacrificeDataModel.Hp + "/" + SacrificeDataModel.MaxHp;
+        hpSlider.value = SacrificeDataModel.Hp;
+    }
+
+    public void DisableSacrificeHp()
+    {
+        canvasParent.SetActive(false);
     }
 
 }

@@ -70,7 +70,7 @@
                     break;
                 case StaticManager.TAG_TRAP:
                     var trap = raycastHit.GetComponent<TrapController>();
-                    if (gameManager.CanAfford(trap.TrapDataModel.TrapType,0))
+                    if (gameManager.CanAfford(trap.TrapDataModel.TrapType,trap.TrapDataModel.CurrentLevel))
                     {
                         gameManager.UpgradeTrap(trap);
                     }
@@ -83,14 +83,24 @@
             switch (raycastHit.tag)
             {
                 case StaticManager.TAG_FLIPPER_SPOT:
-                    gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Buy Flipper for threefiddy");
+                    gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Buy Flipper for "+gameManager.GetCost(BuyableObjectType.FlipperSpot));
                     break;
                 case StaticManager.TAG_TRAP_SPOT:
-                    gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Buy Trap for threefiddy");
+                    gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Choose trap type and buy for 10");
                     break;
                 case StaticManager.TAG_TRAP:
                     var trap = raycastHit.GetComponent<TrapController>();
-                    gameManager.UiManager.ShowTooltip(raycastHit.transform.position, "Upgrade "+trap.TrapDataModel.TrapType+" to " + (trap.TrapDataModel.CurrentLevel+1) +" level for threefiddy");
+                    if (trap.TrapDataModel.CurrentLevel < trap.TrapDataModel.UpgradeCostAndDamage.Count)
+                    {
+                        var isLethal = trap.TrapDataModel.IsLethal ? "lethal" : "non lethal";
+                        var text = "Trap is " + isLethal + " and deal " +
+                                   trap.TrapDataModel.UpgradeCostAndDamage[trap.TrapDataModel.CurrentLevel]
+                                       .DamageForThatLevel + " damage<br>";
+                        text += "Upgrade " + trap.TrapDataModel.TrapType + " for " +
+                                gameManager.GetCost(trap.TrapDataModel.TrapType, trap.TrapDataModel.CurrentLevel);
+                        gameManager.UiManager.ShowTooltip(raycastHit.transform.position, text);
+
+                    }
                     break;
             }
         }

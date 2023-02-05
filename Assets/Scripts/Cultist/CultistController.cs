@@ -17,7 +17,7 @@ namespace Cultist
         private Transform _altarTransform;
 
         private const float WalkingDuration = 3.0f;
-        private readonly Vector2 cultistMinMaxMoveTimeOffset = new(0.1f, 0.3f);
+        private readonly Vector2 cultistMinMaxMoveTimeOffset = new(1.5f, 2.5f);
 
         private Coroutine movementCoroutine;
         private Animator animator;
@@ -39,7 +39,7 @@ namespace Cultist
             if(movementCoroutine != null)
                 StopCoroutine(movementCoroutine);
             transform.DORotate(new Vector3(0,180,0), 0.3f);
-            movementCoroutine = StartCoroutine(MoveToSacrifice(destination, CultistMoveDestination.Sacrifice, GetRandomTimeOffset()));
+            movementCoroutine = StartCoroutine(MoveToSacrifice(destination.position, CultistMoveDestination.Sacrifice, GetRandomTimeOffset()));
         }
 
         public void MoveToAltar()
@@ -88,11 +88,12 @@ namespace Cultist
             transform.DOMove(destination, WalkingDuration).OnComplete(() => DestinationReached(destinationType));
         }
         
-        private IEnumerator MoveToSacrifice(Transform destination, CultistMoveDestination destinationType,  float timeOffset)
+        private IEnumerator MoveToSacrifice(Vector3 destination, CultistMoveDestination destinationType,  float timeOffset)
         {
             animator.SetBool("IsWalking", true);
             yield return new WaitForSeconds(timeOffset);
-            transform.DOMove(destination.position, WalkingDuration).OnComplete(() => DestinationReached(destinationType));
+            destination.y = _altarTransform.position.y;
+            transform.DOMove(destination, WalkingDuration).OnComplete(() => DestinationReached(destinationType));
         }
     }
 

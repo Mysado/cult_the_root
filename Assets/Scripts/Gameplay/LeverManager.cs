@@ -27,10 +27,16 @@ public class LeverManager : MonoBehaviour
             return;
         isInTransition = true;
         var myFloat = 0;
-        trapDoor.DOLocalRotate(openRotation, openDuration).onComplete = CloseTrapdoor;
-        leverHandle.DOLocalRotate(new Vector3(0, 0, -30), 0.5f);
-        DOTween.To(()=> myFloat, x=> myFloat = x, 52, openDuration/10).onComplete = CheckIfSacrificeIsOnTrapDoor;
+        DOTween.To(()=> myFloat, x=> myFloat = x, 52, 0.9f).onComplete = DelayedLeverRotation;
         leverCultistAnimator.SetTrigger("PullLever");
+    }
+
+    private void DelayedLeverRotation()
+    {
+        var myFloat = 0;
+        trapDoor.DOLocalRotate(openRotation, openDuration).onComplete = CloseTrapdoor;
+        leverHandle.DOLocalRotate(new Vector3(0, 0, -45), 1);
+        DOTween.To(()=> myFloat, x=> myFloat = x, 52, openDuration/10).onComplete = CheckIfSacrificeIsOnTrapDoor;
     }
 
     private void CheckIfSacrificeIsOnTrapDoor()
@@ -50,6 +56,6 @@ public class LeverManager : MonoBehaviour
     private void CloseTrapdoor()
     {
         trapDoor.DOLocalRotate(Vector3.zero, closeDuration).onComplete = () => isInTransition = false;
-        leverHandle.DOLocalRotate(new Vector3(0, 0, 30), 0.5f);
+        leverHandle.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
     }
 }

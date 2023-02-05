@@ -74,6 +74,7 @@ public class SacrificeManager : MonoBehaviour
         currentSacrifice.SacrificeDataModel = dataModel;
         currentSacrifice.Move(TreePosition.position, currentSacrifice.SacrificeDataModel.WalkingSpeed, SacrificeStates.IdleAtHole);
         currentSacrifice.SacrificeState = SacrificeStates.WalkingToTree;
+        currentSacrifice.Initialize();
         OnSacrificeSpawned?.Invoke(currentSacrifice.transform);
         inProgressOfSpawning = false;
     }
@@ -97,7 +98,6 @@ public class SacrificeManager : MonoBehaviour
     private SacrificeDataModel GenerateSacrifice(SacrificeData sacrificeData)
     {
         var difficultyMultiplier = gameManager.GetCurrentDifficulty();
-        Debug.Log(Mathf.CeilToInt(sacrificeData.Hp * sacrificeData.HpMultiplierOnDifficulty * difficultyMultiplier));
         return new SacrificeDataModel(
              Mathf.CeilToInt(sacrificeData.Hp * sacrificeData.HpMultiplierOnDifficulty * difficultyMultiplier),
             sacrificeData.PercentageHpLossToStun,
