@@ -22,6 +22,7 @@ namespace Gameplay
         [SerializeField] private CameraManager cameraManager;
         [SerializeField] private AltarManager altarManager;
         [SerializeField] private SkinnedMeshRenderer treeRenderer;
+        [SerializeField] private SoundManager soundManager;
 
         public GameDataHolder GameDataHolder => gameDataHolder;
         
@@ -41,11 +42,14 @@ namespace Gameplay
             uiManager.OnUpgradeCultists += UiManager_OnUpgradeCultists;
             leverManager.OnSacrificeDropped += LeverManager_OnSacrificeDropped;
             trapsManager.OnSacrificeReachedBottom += TrapsManager_OnSacrificeReachedBottom;
+            trapsManager.OnTrapHit += TrapsManager_OnTrapHit;
             altarManager.OnGainExperience += AltarManager_OnGainExperience;
             cameraManager.OnCameraReachedSurfaceAfterSacrifice += CameraManager_OnCameraReachedSurfaceAfterSacrifice;
             altarManager.OnAltarEmptied += AltarManager_OnAltarEmptied;
             InitializeManagers();
             DOTween.To(() => treeBlendShapeValue, x => treeBlendShapeValue = x, 100, 2).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
+
+            PlayMusic();
         }
 
         private void Update()
@@ -60,6 +64,7 @@ namespace Gameplay
 
         public bool CanAfford(TrapTypes trapType,int level)
         {
+            PlaySfx(SfxType.SlotClick);
             return moneyManager.CanAfford(gameDataHolder.TrapDatas.First(x => x.TrapType == trapType).UpgradeCostAndDamageForThatLevel[level].UpgradeCost);
         }
 
@@ -68,12 +73,14 @@ namespace Gameplay
             flippersManager.BuyFlipper(flipperSpotTransform);
             SpendMoney(gameDataHolder.PricesData.Prices.First(x => x.objectType == BuyableObjectType.FlipperSpot).price);
             flippersManager.SetSacrificeTransformInFlippers(sacrificeManager.GetSacrificeTransform());
+            PlaySfx(SfxType.BuyTrap);
         }
         
         public void BuyTrap(Transform trapSpotTransform, TrapData trapData)
         {
             trapsManager.BuyTrap(trapSpotTransform, trapData);
             SpendMoney(gameDataHolder.TrapDatas.First(x => x.TrapType == trapData.TrapType).UpgradeCostAndDamageForThatLevel[0].UpgradeCost);
+            PlaySfx(SfxType.BuyTrap);
         }
         
         public void UpgradeTrap(TrapController trapController)
@@ -82,6 +89,7 @@ namespace Gameplay
                 .UpgradeCostAndDamageForThatLevel[trapController.TrapDataModel.CurrentLevel].UpgradeCost;
             SpendMoney(trapCost);
             trapsManager.UpgradeTrap(trapController);
+            PlaySfx(SfxType.BuyTrap);
         }
 
         public int GetCurrentDifficulty()
@@ -109,6 +117,16 @@ namespace Gameplay
             trapsManager.ChangeSpinDirection(trapController);
         }
 
+        public void PlayMusic()
+        {
+            soundManager.PlayMusic();
+        }
+
+        public void PlaySfx(SfxType sfxType)
+        {
+            soundManager.PlaySfx(sfxType);
+        }
+
         private void SetReferences()
         {
             flippersManager.AddFlippers();
@@ -122,11 +140,6 @@ namespace Gameplay
         private void SpendMoney(int spendAmount)
         {
             moneyManager.SpendMoney(spendAmount);
-        }
-        
-        private void FlippersManager_OnFlipperBuy(int spendAmount)
-        {
-            SpendMoney(spendAmount);
         }
 
         private void MoneyManager_OnMoneyAmountChanged(int moneyAmount)
@@ -153,6 +166,7 @@ namespace Gameplay
         private void UiManager_OnBuyCultist()
         {
             cultistsManager.SpawnCultist();
+            PlaySfx(SfxType.BuyCultist);
         }
 
         private void UiManager_OnUpgradeCultists()
@@ -167,8 +181,25 @@ namespace Gameplay
         
         private void TrapsManager_OnSacrificeReachedBottom()
         {
+            PlaySfx(SfxType.BodyHitFloor);
             cameraManager.ChangeCameraLocation(CameraLocation.Down);
             cultistsManager.StartMovingCultistGroup();
+        }
+        
+        private void TrapsManager_OnTrapHit(TrapTypes trapType)
+        {
+            switch (trapType)
+            {
+                case TrapTypes.Boots:
+                    soundManager.PlaySfx(SfxType.BootTrapDmg);
+                    break;
+                case TrapTypes.Swords:
+                    soundManager.PlaySfx(SfxType.SwordTrapDmg);
+                    break;
+                case TrapTypes.Maces:
+                    soundManager.PlaySfx(SfxType.MaceTrapDmg);
+                    break;
+            }
         }
 
         private void AltarManager_OnGainExperience(int exp)
@@ -184,6 +215,7 @@ namespace Gameplay
         
         private void AltarManager_OnAltarEmptied()
         {
+            soundManager.PlaySfx(SfxType.LifeDrain);
             difficultyManager.IncreaseDifficulty();
             cameraManager.MoveCameraToSurface();
         }

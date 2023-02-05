@@ -52,6 +52,7 @@
             {
                 case StaticManager.TAG_FLIPPER:
                     raycastHit.GetComponent<Flipper>().Interact();
+                    gameManager.PlaySfx(SfxType.FlipperClick);
                     break;
                 case StaticManager.TAG_FLIPPER_SPOT:
                     if (gameManager.CanAfford(BuyableObjectType.FlipperSpot))

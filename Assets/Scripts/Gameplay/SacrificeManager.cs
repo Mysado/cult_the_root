@@ -105,7 +105,8 @@ public class SacrificeManager : MonoBehaviour
             sacrificeData.WalkingSpeed,
              Mathf.CeilToInt(sacrificeData.ExpWorth * sacrificeData.ExpMultiplierOnDifficulty * difficultyMultiplier),
             sacrificeData.SacrificeType,
-             sacrificeData.WaitingTimeAtTree
+             sacrificeData.WaitingTimeAtTree,
+             sacrificeData.ScreamsOfPain
         );
     }
 

@@ -20,4 +20,6 @@ public class SacrificeData : ScriptableObject
     public float ExpMultiplierOnDifficulty;
     public float CultistsKillAmountOnDifficulty;
     public float HpMultiplierOnDifficulty;
+
+    public List<AudioClip> ScreamsOfPain;
 }

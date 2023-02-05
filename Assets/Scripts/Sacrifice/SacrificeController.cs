@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public enum SacrificeStates
 {
@@ -21,8 +23,10 @@ public class SacrificeController : MonoBehaviour
     [FormerlySerializedAs("rigidbody")] [SerializeField] private Rigidbody rb;
     [SerializeField] private SacrificeAnimationController sacrificeAnimationController;
     [SerializeField] private int hp;
+    [SerializeField]
     public SacrificeStates SacrificeState;
     public SacrificeDataModel SacrificeDataModel;
+    [SerializeField] private AudioSource sacrificeAudioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -66,6 +70,8 @@ public class SacrificeController : MonoBehaviour
     public void TakeDamage(int damage, bool isLethal)
     {
         SacrificeDataModel.Hp -= damage;
+            
+        sacrificeAudioSource.PlayOneShot(SacrificeDataModel.ScreamsOfPain[Random.Range(0, SacrificeDataModel.ScreamsOfPain.Count)]);
         if (SacrificeDataModel.Hp <= 0)
         {
             if (!isLethal)

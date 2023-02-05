@@ -14,6 +14,8 @@ public class TrapController : MonoBehaviour
     [SerializeField] [Range(0.1f, 1.0f)]private float rotationDuration;
     public TrapDataModel TrapDataModel;
 
+    public event Action<TrapTypes> OnTrapHit; 
+
     private bool spinDirection;
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,7 @@ public class TrapController : MonoBehaviour
     {
         if (other.CompareTag("Sacrifice"))
         {
+            OnTrapHit?.Invoke(TrapDataModel.TrapType);
             var controller = other.GetComponent<SacrificeController>();
             if(controller && TrapDataModel != null)
                 other.GetComponent<SacrificeController>().TakeDamage(TrapDataModel.UpgradeCostAndDamage[TrapDataModel.CurrentLevel].DamageForThatLevel, TrapDataModel.IsLethal);

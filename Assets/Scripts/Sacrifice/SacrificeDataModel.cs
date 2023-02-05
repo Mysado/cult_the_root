@@ -18,8 +18,9 @@ public class SacrificeDataModel
     public int WalkingSpeed;
     public int ExpWorth;
     public int WaitingTimeAtTree;
+    public List<AudioClip> ScreamsOfPain;
     
-    public SacrificeDataModel(int hp, float percentage, int cultistsKillAmount, int walkingSpeed, int expWorth, SacrificeTypes sacrificeType, int waitingTimeAtTree)
+    public SacrificeDataModel(int hp, float percentage, int cultistsKillAmount, int walkingSpeed, int expWorth, SacrificeTypes sacrificeType, int waitingTimeAtTree, List<AudioClip> screamsOfPain)
     {
         Hp = hp;
         MaxHp = hp;
@@ -29,5 +30,6 @@ public class SacrificeDataModel
         ExpWorth = expWorth;
         SacrificeType = sacrificeType;
         WaitingTimeAtTree = waitingTimeAtTree;
+        ScreamsOfPain = screamsOfPain;
     }
 }

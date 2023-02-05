@@ -12,6 +12,7 @@ public class TrapsManager : MonoBehaviour
     [SerializeField] private BottomHoleController bottomHoleController;
     private List<TrapController> traps = new();
     public event Action OnSacrificeReachedBottom;
+    public event Action<TrapTypes> OnTrapHit;
 
     private void Start()
     {
@@ -21,6 +22,7 @@ public class TrapsManager : MonoBehaviour
     public void BuyTrap(Transform flipperSpotTransform, TrapData trapData)
     {
         var trap = Instantiate(trapData.TrapPrefab, flipperSpotTransform.position,quaternion.identity, transform).GetComponent<TrapController>();
+        trap.OnTrapHit += OnTrapHitEvent;
         trap.TrapDataModel = CreateTrapDataModel(trapData);
         traps.Add(trap);
     }
@@ -42,5 +44,10 @@ public class TrapsManager : MonoBehaviour
             trapData.UpgradeCostAndDamageForThatLevel,
             trapData.TrapType
         ); 
+    }
+
+    private void OnTrapHitEvent(TrapTypes trapType)
+    {
+        OnTrapHit?.Invoke(trapType);
     }
 }

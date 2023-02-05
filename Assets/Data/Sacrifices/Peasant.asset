@@ -25,3 +25,9 @@ MonoBehaviour:
   ExpMultiplierOnDifficulty: 5
   CultistsKillAmountOnDifficulty: 1
   HpMultiplierOnDifficulty: 1
+  ScreamsOfPain:
+  - {fileID: 8300000, guid: 193ba5f26013c884291133532a30ba5b, type: 3}
+  - {fileID: 8300000, guid: 598d747620a8e7741a0e975a90a0aa00, type: 3}
+  - {fileID: 8300000, guid: 7f2e808d4e8b4614a96433296560589f, type: 3}
+  - {fileID: 8300000, guid: 74707aad6c9aebd41bb1b946d01faea8, type: 3}
+  - {fileID: 8300000, guid: 23ecc21e5fa0ea74581cce7a1020db05, type: 3}

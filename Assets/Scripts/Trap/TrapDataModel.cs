@@ -6,7 +6,7 @@ public enum TrapTypes
 {
     Boots,
     Swords,
-    CanOpener
+    Maces
 }
 public class TrapDataModel
 {
