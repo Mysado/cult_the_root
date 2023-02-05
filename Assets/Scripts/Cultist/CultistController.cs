@@ -22,7 +22,7 @@ namespace Cultist
         private Coroutine movementCoroutine;
         private Animator animator;
     
-        public void SetReferences(Vector3 randomCultistPosition, Transform altarTransform, Transform sacrificeTransform)
+        public void SetReferences(Vector3 randomCultistPosition, Transform altarTransform)
         {
             _startingPosition = randomCultistPosition;
             _altarTransform = altarTransform;
@@ -47,7 +47,7 @@ namespace Cultist
             if(movementCoroutine != null)
                 StopCoroutine(movementCoroutine);
             transform.DORotate(new Vector3(0,0,0), 0.3f);
-            movementCoroutine = StartCoroutine(Move(_altarTransform.position, CultistMoveDestination.Altar, GetRandomTimeOffset()));
+            movementCoroutine = StartCoroutine(Move(_altarTransform.position, CultistMoveDestination.Altar, GetRandomTimeOffset(0.1f)));
         }
 
         public void MoveToStartPosition()
@@ -56,12 +56,12 @@ namespace Cultist
                 StopCoroutine(movementCoroutine);
             transform.DORotate(new Vector3(0,180,0), 0.3f);
 
-            movementCoroutine = StartCoroutine(Move(_startingPosition, CultistMoveDestination.StartingPosition, GetRandomTimeOffset()));
+            movementCoroutine = StartCoroutine(Move(_startingPosition, CultistMoveDestination.StartingPosition, GetRandomTimeOffset(0.1f)));
         }
 
-        private float GetRandomTimeOffset()
+        private float GetRandomTimeOffset(float multiplier = 1.0f)
         {
-            return Random.Range(cultistMinMaxMoveTimeOffset.x, cultistMinMaxMoveTimeOffset.y);
+            return Random.Range(cultistMinMaxMoveTimeOffset.x * multiplier, cultistMinMaxMoveTimeOffset.y * multiplier);
         }
 
         private void DestinationReached(CultistMoveDestination destinationType)

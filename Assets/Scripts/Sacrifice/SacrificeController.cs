@@ -85,11 +85,14 @@ public class SacrificeController : MonoBehaviour
     {
         SacrificeDataModel.Hp -= damage;
             
-        sacrificeAudioSource.PlayOneShot(SacrificeDataModel.ScreamsOfPain[Random.Range(0, SacrificeDataModel.ScreamsOfPain.Count)]);
+        sacrificeAudioSource.PlayOneShot(SacrificeDataModel.ScreamsOfPain[Random.Range(0, SacrificeDataModel.ScreamsOfPain.Count - 1)]);
         if (SacrificeDataModel.Hp <= 0)
         {
             if (!isLethal)
+            {
                 SacrificeDataModel.Hp = 1;
+                SacrificeState = SacrificeStates.Stunned;
+            }
             else
                 SacrificeState = SacrificeStates.Dead;
         }        
@@ -98,7 +101,7 @@ public class SacrificeController : MonoBehaviour
             hpBackground.color = stunnedHpColor;
             sliderBackground.color = stunnedHpColor;
             SacrificeState = SacrificeStates.Stunned;
-    }
+        }
         hpText.text = SacrificeDataModel.Hp + "/" + SacrificeDataModel.MaxHp;
         hpSlider.value = SacrificeDataModel.Hp;
     }

@@ -16,8 +16,8 @@ MonoBehaviour:
     type: 3}
   SacrificeType: 0
   MinimumDifficultyNeededToAppear: 0
-  Hp: 5
-  PercentageHpLossToStun: 20
+  Hp: 6
+  PercentageHpLossToStun: 0.8
   CultistsKillAmount: 1
   WalkingSpeed: 10
   ExpWorth: 7

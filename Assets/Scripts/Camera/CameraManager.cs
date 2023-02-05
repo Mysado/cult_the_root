@@ -24,7 +24,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private List<CameraPositionParameters> cameraPositions;
     [SerializeField] private Camera mainCamera;
 
-    public event Action OnCameraReachedSurfaceAfterSacrifice; 
+    public event Action OnCameraReachedSurfaceAfterSacrifice;
+    public event Action OnCameraMoved;
 
     private CameraLocation cameraLocation;
     private bool isInTransition;
@@ -59,6 +60,7 @@ public class CameraManager : MonoBehaviour
     private void MoveCamera(bool overrideTransition = false, float overrideDuration = 0)
     {
         isInTransition = true;
+        OnCameraMoved?.Invoke();
         var cameraPositionParameter = cameraPositions[(int)cameraLocation];
         var transitionDuration = cameraPositionParameter.transitionDuration;
         if (overrideTransition)

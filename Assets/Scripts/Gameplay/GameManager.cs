@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 namespace Gameplay
 {
@@ -49,6 +50,7 @@ namespace Gameplay
             cameraManager.OnCameraReachedSurfaceAfterSacrifice += CameraManager_OnCameraReachedSurfaceAfterSacrifice;
             altarManager.OnAltarEmptied += AltarManager_OnAltarEmptied;
             treeManager.OnMaxLevelReached += TreeManager_OnMaxLevelReached;
+            cameraManager.OnCameraMoved += CameraManager_OnCameraMoved;
             InitializeManagers();
             DOTween.To(() => treeBlendShapeValue, x => treeBlendShapeValue = x, 100, 2).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
 
@@ -141,6 +143,11 @@ namespace Gameplay
             soundManager.PlaySfx(sfxType);
         }
 
+        public void GotoMenu()
+        {
+            SceneManager.LoadScene(0);
+        }
+
         private void SetReferences()
         {
             flippersManager.AddFlippers();
@@ -188,6 +195,7 @@ namespace Gameplay
         private void UiManager_OnBuyCultist()
         {
             cultistsManager.SpawnCultist();
+            SpendMoney(gameDataHolder.PricesData.Prices.First(x => x.objectType == BuyableObjectType.Cultist).price);
             PlaySfx(SfxType.BuyCultist);
         }
 
@@ -247,6 +255,12 @@ namespace Gameplay
         {
             sacrificeManager.gameObject.SetActive(false);
             uiManager.Win();
+        }
+
+        private void CameraManager_OnCameraMoved()
+        {
+            uiManager.CloseTooltip();
+            uiManager.CloseTrapSelection();
         }
 
         private void InitializeManagers()

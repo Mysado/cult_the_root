@@ -12,7 +12,6 @@ namespace Cultist
         [SerializeField] private GameObject cultistPrefab;
         [SerializeField] private Transform cultistsSpawnPosition;
         [SerializeField] private Transform altarTransform;
-        [SerializeField] private Transform sacrificeTransform;
         [SerializeField] private CultistsGroupController cultistsGroupController;
 
         public event Action<int> OnCultistsAmountChanged;
@@ -24,7 +23,7 @@ namespace Cultist
         private int _cultistsReachedStartingPos;
 
         private readonly List<CultistController> _cultists = new();
-        private readonly Vector2 _cultistSpawnPositionOffsetMinMax = new(0.1f, 2);
+        private readonly Vector2 _cultistSpawnPositionOffsetMinMax = new(0.5f, 2);
 
         public void Initialize()
         {
@@ -46,7 +45,7 @@ namespace Cultist
             cultistController.OnReachedSacrifice += CultistController_OnReachedSacrifice;
             cultistController.OnReachedAltar += CultistController_OnReachedAltar;
             cultistController.OnReachedStartingPosition += CultistController_OnReachedStartingPosition;
-            cultistController.SetReferences(randomCultistPosition, altarTransform, sacrificeTransform);
+            cultistController.SetReferences(randomCultistPosition, altarTransform);
             AddCultistToGroup(cultistController);
             OnCultistsAmountChanged?.Invoke(_cultists.Count);
         }

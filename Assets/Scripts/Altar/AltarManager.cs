@@ -64,7 +64,7 @@
         {
             if (state == SacrificeStates.Dead)
             {
-                OnGainExperience?.Invoke(expWorth/2);
+                OnGainExperience?.Invoke(expWorth/10);
             } 
             else
             {

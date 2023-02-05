@@ -1,6 +1,7 @@
+using System;
+
 namespace Cultist
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using DG.Tweening;
@@ -9,8 +10,8 @@ namespace Cultist
     public class CultistsGroupController : MonoBehaviour
     {
         [SerializeField] private List<ParticleSystem> fightParticleSystems;
-        [SerializeField] private Transform bodyAboveCultistsTransform;
         [SerializeField] private Transform bodyAboveAltarTransform;
+        [SerializeField] private GameObject particleParent;
         [SerializeField] private float moveBodyAboveCultistsDuration;
 
         public event Action OnFightWon;
@@ -53,6 +54,7 @@ namespace Cultist
 
         public void StartSacrificeFight()
         {
+            particleParent.transform.position = _cultists[Random.Range(0, _cultists.Count - 1)].transform.position + Vector3.up + (Vector3.right * 2);
             fightParticleSystems.ForEach(x => x.Play());
             StartCoroutine(Fight());
         }
@@ -66,7 +68,14 @@ namespace Cultist
                     break;
                 
                 case SacrificeStates.FightingCultists:
-                    LoseCultist();
+                   
+                    var amountOfLostCultists =Mathf.CeilToInt(_sacrificeController.SacrificeDataModel.Hp -
+                    _sacrificeController.SacrificeDataModel.PercentageHpLossToStun *
+                        _sacrificeController.SacrificeDataModel.MaxHp);
+                    for (int i = 0; i < amountOfLostCultists; i++)
+                    {
+                        LoseCultist();
+                    }
                     WinFight();
                     break;
                 default:
@@ -93,7 +102,8 @@ namespace Cultist
 
         private void MoveBodyAboveCultists()
         {
-            _sacrificeController.transform.DOMove(bodyAboveCultistsTransform.position, moveBodyAboveCultistsDuration)
+            var position = _cultists[Random.Range(0, _cultists.Count - 1)].transform.position + Vector3.up;
+            _sacrificeController.transform.DOMove(position, moveBodyAboveCultistsDuration)
                                 .OnComplete(MoveCultistsGroupToAltar);
         }
 
