@@ -17,22 +17,29 @@
         private List<CorpseSlot> corpseSlots = new();
         [SerializeField] 
         private float bodyToCorpseSlotMoveDuration;
-        [SerializeField] private GameManager gameManager;
 
         public event Action<int> OnGainExperience; 
+        public event Action OnAltarEmptied; 
 
         private SacrificeController _sacrificeController;
 
         public void ReceiveBody(SacrificeController sacrificeController)
         {
             _sacrificeController = sacrificeController;
-            StartLifeForceAbsorptionParticles();
             MoveBodyToRandomCorpseSlot();
         }
 
-        private void StartLifeForceAbsorptionParticles()
+        private void StartLifeForceAbsorption()
         {
-            lifeForceAbsorptionParticles.Play(); 
+            lifeForceAbsorptionParticles.Play();
+            foreach (var corpseSlot in corpseSlots)
+            {
+                corpseSlot.BodyInSlot.transform.DOScale(Vector3.zero, 1);
+                Destroy(corpseSlot.BodyInSlot, 1);
+                corpseSlot.Occupied = false;
+                corpseSlot.BodyInSlot = null;
+            }
+            OnAltarEmptied?.Invoke();
         }
 
         private void MoveBodyToRandomCorpseSlot()
@@ -40,6 +47,11 @@
             var randomCorpseSlot = GetRandomNotOccupiedCorpseSlot();
             _sacrificeController.transform.DOMove(randomCorpseSlot.transform.position, bodyToCorpseSlotMoveDuration).OnComplete(() => GainExpFromCorpse(_sacrificeController.SacrificeDataModel.ExpWorth, _sacrificeController.SacrificeState));
             randomCorpseSlot.Occupied = true;
+            randomCorpseSlot.BodyInSlot = _sacrificeController.gameObject;
+            if (corpseSlots.Where(x => x.Occupied == false).ToList().Count == 0)
+            {
+                StartLifeForceAbsorption();
+            }
         }
 
         private CorpseSlot GetRandomNotOccupiedCorpseSlot()
