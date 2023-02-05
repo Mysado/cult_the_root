@@ -168,7 +168,15 @@ namespace Gameplay
 
         private void CultistsManager_OnCultistsAmountChanged(int cultistsAmount)
         {
-            uiManager.OnCultistsAmountChanged(cultistsAmount);
+            if (cultistsAmount == 0)
+            {
+                uiManager.Lose();
+            } 
+            else
+            {
+                uiManager.OnCultistsAmountChanged(cultistsAmount);
+
+            }
         }
 
         private void CultistsManager_OnReachedAltar()
@@ -234,9 +242,11 @@ namespace Gameplay
             treeManager.DelayedLevel();
             cameraManager.MoveCameraToSurface();
         }
+        
         private void TreeManager_OnMaxLevelReached()
         {
             sacrificeManager.gameObject.SetActive(false);
+            uiManager.Win();
         }
 
         private void InitializeManagers()

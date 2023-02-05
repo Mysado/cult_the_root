@@ -15,6 +15,8 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     [SerializeField] private TooltipsManager tooltipsManager;
     [SerializeField] private GameObject trapSelectionMenu;
+    [SerializeField] private GameObject WinPanel;
+    [SerializeField] private GameObject LosePanel;
 
     public event Action OnBuyCultist;
     public event Action OnUpgradeCultists;
@@ -44,6 +46,17 @@ public class UiManager : MonoBehaviour
     {
         cultistsAmountText.text = cultistsAmount.ToString();
     }
+
+    public void Win()
+    {
+        WinPanel.SetActive(true);
+    }
+    
+    public void Lose()
+    {
+        LosePanel.SetActive(true);
+    }
+    
 
     private void TryBuyCultist()
     {
