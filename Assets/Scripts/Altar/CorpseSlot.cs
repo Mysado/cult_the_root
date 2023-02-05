@@ -7,5 +7,6 @@
     public class CorpseSlot : MonoBehaviour
     {
         public bool Occupied { get; set;}
+        public GameObject BodyInSlot { get; set; }
     }
 }

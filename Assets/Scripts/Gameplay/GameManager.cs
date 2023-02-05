@@ -1,4 +1,7 @@
-﻿namespace Gameplay
+﻿using System;
+using DG.Tweening;
+
+namespace Gameplay
 {
     using System.Linq;
     using Cultist;
@@ -18,10 +21,13 @@
         [SerializeField] private TrapsManager trapsManager;
         [SerializeField] private CameraManager cameraManager;
         [SerializeField] private AltarManager altarManager;
+        [SerializeField] private SkinnedMeshRenderer treeRenderer;
 
         public GameDataHolder GameDataHolder => gameDataHolder;
         
         public UiManager UiManager => uiManager;
+
+        private float treeBlendShapeValue;
         
         public void Awake()
         {
@@ -37,9 +43,16 @@
             trapsManager.OnSacrificeReachedBottom += TrapsManager_OnSacrificeReachedBottom;
             altarManager.OnGainExperience += AltarManager_OnGainExperience;
             cameraManager.OnCameraReachedSurfaceAfterSacrifice += CameraManager_OnCameraReachedSurfaceAfterSacrifice;
+            altarManager.OnAltarEmptied += AltarManager_OnAltarEmptied;
             InitializeManagers();
+            DOTween.To(() => treeBlendShapeValue, x => treeBlendShapeValue = x, 100, 2).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         }
-        
+
+        private void Update()
+        {
+            treeRenderer.SetBlendShapeWeight(0, treeBlendShapeValue);
+        }
+
         public bool CanAfford(BuyableObjectType objectType)
         {
             return moneyManager.CanAfford(gameDataHolder.PricesData.Prices.First(x => x.objectType == objectType).price);
@@ -167,6 +180,11 @@
         private void CameraManager_OnCameraReachedSurfaceAfterSacrifice()
         {
             sacrificeManager.SacrificeSacrificed();
+        }
+        
+        private void AltarManager_OnAltarEmptied()
+        {
+            difficultyManager.IncreaseDifficulty();
         }
 
         private void InitializeManagers()
