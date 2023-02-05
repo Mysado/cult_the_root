@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -21,8 +23,10 @@ public class CameraManager : MonoBehaviour
 {
     [SerializeField] private List<CameraPositionParameters> cameraPositions;
     [SerializeField] private Camera mainCamera;
-    private CameraLocation cameraLocation;
 
+    public event Action OnCameraReachedSurfaceAfterSacrifice; 
+
+    private CameraLocation cameraLocation;
     private bool isInTransition;
 
     void Start()
@@ -59,9 +63,26 @@ public class CameraManager : MonoBehaviour
         mainCamera.DOOrthoSize(cameraPositionParameter.cameraSize, transitionDuration);
     }
 
+    private void OnComplete()
+    {
+        isInTransition = false;
+        OnCameraReachedSurfaceAfterSacrifice?.Invoke();
+    }
+
     public void ChangeCameraLocation(CameraLocation newLocation, bool overrideTransition = false, float overrideDuration = 0)
     {
         cameraLocation = newLocation;
         MoveCamera(overrideTransition, overrideDuration);
+    }
+
+    public void MoveCameraToSurface()
+    {
+        cameraLocation = CameraLocation.Up;
+        var cameraPositionParameter = cameraPositions[(int)cameraLocation];
+        var transitionDuration = cameraPositionParameter.transitionDuration;
+        transitionDuration = 5;
+        isInTransition = true;
+        mainCamera.transform.DOMove(cameraPositions[(int)cameraLocation].cameraPosition.position, transitionDuration).onComplete = OnComplete ;
+        mainCamera.DOOrthoSize(cameraPositionParameter.cameraSize, transitionDuration);
     }
 }

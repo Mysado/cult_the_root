@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04669b3e721ffc42937df54b209004c, type: 3}
+  m_Name: Peasant
+  m_EditorClassIdentifier: 
+  SacrificePrefab: {fileID: 1907115395087668858, guid: 5000826697cc37e40b62b56d9726975e,
+    type: 3}
+  SacrificeType: 0
+  MinimumDifficultyNeededToAppear: 0
+  Hp: 5
+  PercentageHpLossToStun: 20
+  CultistsKillAmount: 1
+  WalkingSpeed: 10
+  ExpWorth: 50
+  WaitingTimeAtTree: 5
+  ExpMultiplierOnDifficulty: 5
+  CultistsKillAmountOnDifficulty: 1
+  HpMultiplierOnDifficulty: 1

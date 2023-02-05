@@ -12,13 +12,7 @@ public class DifficultyManager : MonoBehaviour
     public int CurrentDifficulty => currentDifficulty;
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        currentDifficulty = 1;
     }
 
     public void IncreaseDifficulty()

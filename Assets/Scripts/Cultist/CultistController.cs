@@ -19,6 +19,8 @@ namespace Cultist
 
         private const float WalkingDuration = 1.0f;
         private readonly Vector2 cultistMinMaxMoveTimeOffset = new(0.1f, 0.3f);
+
+        private Coroutine movementCoroutine;
     
         public void SetReferences(Vector3 randomCultistPosition, Transform altarTransform, Transform sacrificeTransform)
         {
@@ -34,17 +36,23 @@ namespace Cultist
     
         public void MoveToSacrifice()
         {
-            StartCoroutine(Move(_sacrificeTransform.position, CultistMoveDestination.Sacrifice, GetRandomTimeOffset()));
+            if(movementCoroutine != null)
+                StopCoroutine(movementCoroutine);
+            movementCoroutine = StartCoroutine(Move(_sacrificeTransform.position, CultistMoveDestination.Sacrifice, GetRandomTimeOffset()));
         }
 
         public void MoveToAltar()
-        {
-            StartCoroutine(Move(_altarTransform.position, CultistMoveDestination.Altar, GetRandomTimeOffset()));
+        {            
+            if(movementCoroutine != null)
+                StopCoroutine(movementCoroutine);
+            movementCoroutine = StartCoroutine(Move(_altarTransform.position, CultistMoveDestination.Altar, GetRandomTimeOffset()));
         }
 
         public void MoveToStartPosition()
-        {
-            StartCoroutine(Move(_startingPosition, CultistMoveDestination.StartingPosition, GetRandomTimeOffset()));
+        {            
+            if(movementCoroutine != null)
+                StopCoroutine(movementCoroutine);
+            movementCoroutine = StartCoroutine(Move(_startingPosition, CultistMoveDestination.StartingPosition, GetRandomTimeOffset()));
         }
 
         private float GetRandomTimeOffset()

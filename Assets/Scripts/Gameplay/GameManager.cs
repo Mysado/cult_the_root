@@ -36,6 +36,7 @@
             leverManager.OnSacrificeDropped += LeverManager_OnSacrificeDropped;
             trapsManager.OnSacrificeReachedBottom += TrapsManager_OnSacrificeReachedBottom;
             altarManager.OnGainExperience += AltarManager_OnGainExperience;
+            cameraManager.OnCameraReachedSurfaceAfterSacrifice += CameraManager_OnCameraReachedSurfaceAfterSacrifice;
             InitializeManagers();
         }
         
@@ -88,6 +89,11 @@
         public SacrificeController GetCurrentSacrifice()
         {
             return sacrificeManager.GetSacrificeController();
+        }
+
+        public void ChangeTrapSpinDirection(TrapController trapController)
+        {
+            trapsManager.ChangeSpinDirection(trapController);
         }
 
         private void SetReferences()
@@ -155,6 +161,12 @@
         private void AltarManager_OnGainExperience(int exp)
         {
             AddMoney(exp);
+            cameraManager.MoveCameraToSurface();
+        }
+
+        private void CameraManager_OnCameraReachedSurfaceAfterSacrifice()
+        {
+            sacrificeManager.SacrificeSacrificed();
         }
 
         private void InitializeManagers()

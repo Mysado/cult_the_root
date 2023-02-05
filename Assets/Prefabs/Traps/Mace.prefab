@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trapCenter: {fileID: 8405166835337640417}
-  rotationDuration: 0.559
+  rotationDuration: 0.2
 --- !u!136 &787190067284373778
 CapsuleCollider:
   m_ObjectHideFlags: 0
